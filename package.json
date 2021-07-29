@@ -32,7 +32,7 @@
 		"time string"
 	],
 	"scripts": {
-		"clean": "rimraf dst/*",
+		"clean": "rimraf dst/* && rimraf *.tgz",
 		"lint": "tslint --project tsconfig.json",
 		"predebug": "npm run clean",
 		"debug": "tsc --build",
