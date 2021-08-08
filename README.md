@@ -1,8 +1,7 @@
 # ubdt
 Ubiquitous Binary Data Transformation
-Set of ubiquitous binary data transformation functions, including encoding, bitwise and hash functions.
 
-### Long_live_snake_case
+Set of ubiquitous binary data transformation functions, including encoding, bitwise and hash functions.
 
 
 ## Bit Operation
@@ -66,7 +65,6 @@ Returns buffer containing SHA256 256-bit hash code
 
 ### Random_Number.random_nat32
 Returns random 32-bit natural number
-
 
 ### Random_Number.random_nat53
 Returns random 53-bit natural number
