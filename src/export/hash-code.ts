@@ -15,6 +15,10 @@ const _SHA256_K = [
 
 export default class Hash_Code {
 
+	/**
+		Returns FNV1A 32-bit hash code
+		@param bin binary to hash
+	*/
 	static get_fnv1a32_hash_code( bin: DataView ): number {
 		let hc = 2166136261;
 		for ( let i = 0; i < bin.byteLength; ++i ) {
@@ -24,6 +28,10 @@ export default class Hash_Code {
 		return hc;
 	}
 
+	/**
+		Returns buffer containing little-endian FNV1A 64-bit hash code
+		@param bin binary to hash
+	*/
 	static get_fnv1a64_hash_code( bin: DataView ): ArrayBuffer {
 		const hc = new Uint32Array( [ 0x84222325, 0xcbf29ce4 ] ); // little-endian offset basis
 		for ( let i = 0; i < bin.byteLength; ++i ) {
@@ -34,6 +42,10 @@ export default class Hash_Code {
 		return hc.buffer; // little-endian hash code
 	}
 
+	/**
+		Returns buffer containing SHA256 256-bit hash code
+		@param bin binary to hash
+	*/
 	static get_sha256_hash_code( bin: DataView ): ArrayBuffer {
 		const bc = Math.ceil( ( bin.byteLength + 1 + 8 ) / 64 );	// block count
 		const lbi = bc - 1;	// last block index

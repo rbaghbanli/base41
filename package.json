@@ -1,6 +1,6 @@
 {
 	"name": "ubdt",
-	"version": "0.1.5",
+	"version": "1.0.0",
 	"description": "Ubiquitous Binady Data Transformation",
 	"main": "dst/index.js",
 	"types": "dst/index.d.ts",
@@ -18,18 +18,18 @@
 		"Binary",
 		"Data",
 		"Transformation",
-		"random number",
 		"bit operation",
 		"bit rotation",
-		"binary data comparison",
+		"binary data",
 		"base16 encoding",
 		"base41 encoding",
+		"buffer string",
+		"date string",
+		"time string",
 		"FNV1A32 hash code",
 		"FNV1A64 hash code",
 		"SHA256 hash code",
-		"buffer string",
-		"date string",
-		"time string"
+		"random number"
 	],
 	"scripts": {
 		"clean": "rimraf dst/* && rimraf *.tgz",

@@ -40,7 +40,7 @@ export default class Data_Transformation_Test {
 			[ [ 0, 66, 0, 60, 4, 16, 4, 17, 4, 18, 4, 48, 4, 49, 4, 50, 0, 70, 0, 73, 0, 66 ], 'ucs2', true ],
 		].forEach( prm => {
 			const bin = new Uint8Array( prm[ 0 ] as number[] );
-			const enc: string = prm[ 1 ] as string;
+			const enc = prm[ 1 ] as 'base16'|'base41'|'ascii'|'ucs2';
 			const lend: boolean = prm[ 2 ] as boolean;
 			const str = Data_Transformation.get_string_from_binary( new DataView( bin.buffer ), enc, lend );
 			const v = new Uint8Array( Data_Transformation.get_buffer_from_string( str, enc, lend ) );

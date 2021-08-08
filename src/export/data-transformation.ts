@@ -31,14 +31,20 @@ const _BASE41_TRIAD_DECODE_MAP = new Map<number, Map<number, Map<number, number>
 
 export default class Data_Transformation {
 
-	// get YYYY-MM-DD date string
+	/**
+		Returns YYYY-MM-DD date string
+		@param date Date
+	*/
 	static get_date_string( date: Date ): string {
 		const month = `00${ ( date.getMonth() + 1 ).toString() }`.slice( -2 );
 		const day = `00${ date.getDate().toString() }`.slice( -2 );
 		return `${ date.getFullYear().toString() }-${ month }-${ day }`;
 	}
 
-	// get HH:MM:SS time string
+	/**
+		Returns HH:MM:SS time string
+		@param date Date
+	*/
 	static get_time_string( date: Date ): string {
 		const hour = `00${ date.getHours().toString() }`.slice( -2 );
 		const minute = `00${ date.getMinutes().toString() }`.slice( -2 );
@@ -46,6 +52,11 @@ export default class Data_Transformation {
 		return `${ hour }:${ minute }:${ second }`;
 	}
 
+	/**
+		Returns true if two binary sequences contain the same bytes, false otherwise
+		@param bin1 first binary sequence to compare
+		@param bin2 second binary sequence to compare
+	*/
 	static equal_binary( bin1: DataView, bin2: DataView ): boolean {
 		if ( bin1 == null && bin2 == null ) {
 			return true;
@@ -73,25 +84,48 @@ export default class Data_Transformation {
 		return true;
 	}
 
+	/**
+		Returns base 16 dyad string for code point
+		@param code code point
+	*/
 	static get_base16_dyad( code: number ): string | undefined {
 		return _BASE16_DYAD_ENCODE_MAP.get( code );
 	}
 
+	/**
+		Returns code point of base 16 dyad string
+		@param str base 16 string
+		@param ix index of dyad
+	*/
 	static get_base16_dyad_code_at( str: string, ix: number ): number | undefined {
 		return _BASE16_DYAD_DECODE_MAP.get( str.charCodeAt( ix ) )?.get( str.charCodeAt( ix + 1 ) );
 	}
 
+	/**
+		Returns base 41 triad string for code point
+		@param code code point
+	*/
 	static get_base41_triad( code: number ): string | undefined {
 		return _BASE41_TRIAD_ENCODE_MAP.get( code );
 	}
 
+	/**
+		Returns code point of base 41 triad string
+		@param str base 41 string
+		@param ix index of triad
+	*/
 	static get_base41_triad_code_at( str: string, offset: number ): number | undefined {
 		return _BASE41_TRIAD_DECODE_MAP.get(
 			str.charCodeAt( offset ) )?.get( str.charCodeAt( offset + 1 ) )?.get( str.charCodeAt( offset + 2 )
 		);
 	}
 
-	static get_binary_length_from_string( str: string, encoding: string = 'ucs2' ): number {
+	/**
+		Returns the number of decoded bytes in string containing encoded binary
+		@param str string containing encoded binary
+		@param encoding 'base16', 'base41', 'ascii', or 'ucs2'
+	*/
+	static get_binary_length_from_string( str: string, encoding: 'base16'|'base41'|'ascii'|'ucs2' = 'ucs2' ): number {
 		switch ( encoding ) {
 			case 'base16': return Math.ceil( str.length / 2 );
 			case 'base41': return Math.round( str.length * 2 / 3 );
@@ -101,7 +135,13 @@ export default class Data_Transformation {
 		}
 	}
 
-	static get_string_from_binary( bin: DataView, encoding: string = 'ucs2', little_endian?: boolean ): string {
+	/**
+		Returns the string containing encoded binary
+		@param bin binary to encode
+		@param encoding 'base16', 'base41', 'ascii', or 'ucs2'
+		@param little_endian true if little end first
+	*/
+	static get_string_from_binary( bin: DataView, encoding: 'base16'|'base41'|'ascii'|'ucs2' = 'ucs2', little_endian?: boolean ): string {
 		switch ( encoding ) {
 			case 'base16': {
 				let str = '';
@@ -152,13 +192,26 @@ export default class Data_Transformation {
 		}
 	}
 
-	static get_buffer_from_string( str: string, encoding: string = 'ucs2', little_endian?: boolean ): ArrayBuffer {
+	/**
+		Returns the buffer containing decoded bytes
+		@param str string containing encoded binary
+		@param encoding 'base16', 'base41', 'ascii', or 'ucs2'
+		@param little_endian true if little end first
+	*/
+	static get_buffer_from_string( str: string, encoding: 'base16'|'base41'|'ascii'|'ucs2' = 'ucs2', little_endian?: boolean ): ArrayBuffer {
 		return this.set_binary_from_string(
 			new DataView( new ArrayBuffer( this.get_binary_length_from_string( str, encoding ) ) ), str, encoding, little_endian
 		).buffer;
 	}
 
-	static set_binary_from_string( bin: DataView, str: string, encoding: string = 'ucs2', little_endian?: boolean ): DataView {
+	/**
+		Returns the binary set with decoded bytes
+		@param bin binary to set bytes
+		@param str string containing encoded binary
+		@param encoding 'base16', 'base41', 'ascii', or 'ucs2'
+		@param little_endian true if little end first
+	*/
+	static set_binary_from_string( bin: DataView, str: string, encoding: 'base16'|'base41'|'ascii'|'ucs2' = 'ucs2', little_endian?: boolean ): DataView {
 		switch ( encoding ) {
 			case 'base16': {
 				for ( let lfi = str.length - 1, i = 0, bi = 0; i < str.length; ++i, ++bi ) {
