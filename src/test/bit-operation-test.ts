@@ -1,8 +1,8 @@
 import Bit_Operation from '../export/bit-operation';
 
-class Bit_Operation_Test {
+export class Bit_Operation_Test {
 
-	static test_rotate_nat32(): number {
+	test_rotate_nat32(): number {
 		let passed = 0, failed = 0;
 		console.log( `test binary.test_rotate_nat32 started` );
 		[

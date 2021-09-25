@@ -1,8 +1,8 @@
 import Data_Transformation from "../export/data-transformation";
 
-export default class Data_Transformation_Test {
+export class Data_Transformation_Test {
 
-	static test_buffer_string(): number {
+	test_buffer_string(): number {
 		let passed = 0, failed = 0;
 		console.log( `test binary.test_buffer_string started` );
 		[

@@ -1,9 +1,9 @@
 import Hash_Code from '../export/hash-code';
 import Data_Transformation from "../export/data-transformation";
 
-class Hash_Code_Test {
+export class Hash_Code_Test {
 
-	static test_sha256_hash_code(): number {
+	test_sha256_hash_code(): number {
 		let passed = 0, failed = 0;
 		console.log( `test crypto.test_sha256_hashcode started` );
 		[
