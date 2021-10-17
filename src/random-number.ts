@@ -1,4 +1,4 @@
-export default class Random_Number {
+export class Random_Number {
 
 	/**
 		Returns random 32-bit natural number
@@ -22,8 +22,9 @@ export default class Random_Number {
 	}
 
 	/**
-		Returns random natural number between 0 and specified value
+		Returns the random natural number between 0 and specified value
 		@param max upper bound of generated random number
+		@returns the random natural number between 0 and specified value
 	*/
 	static get_random_nat( max: number ): number {
 		return Math.round( ( ( ( new Date() ).getTime() % 1000000 ) / 1000000 ) * Math.random() * max );

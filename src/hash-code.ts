@@ -1,4 +1,4 @@
-import Bit_Operation from '../export/bit-operation';
+import { Bit_Operation } from './bit-operation';
 
 const _FNV32_PRIME = 16777619;
 const _FNV64_PRIME = new Uint32Array( [ 0x000001B3, 0x100 ] );
@@ -13,11 +13,12 @@ const _SHA256_K = [
 	0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
 ];
 
-export default class Hash_Code {
+export class Hash_Code {
 
 	/**
-		Returns FNV1A 32-bit hash code
+		Returns the FNV1A 32-bit hash code
 		@param bin binary to hash
+		@returns the FNV1A 32-bit hash code
 	*/
 	static get_fnv1a32_hash_code( bin: DataView ): number {
 		let hc = 2166136261;
@@ -29,8 +30,9 @@ export default class Hash_Code {
 	}
 
 	/**
-		Returns buffer containing little-endian FNV1A 64-bit hash code
+		Returns the buffer containing little-endian FNV1A 64-bit hash code
 		@param bin binary to hash
+		@returns the buffer containing little-endian FNV1A 64-bit hash code
 	*/
 	static get_fnv1a64_hash_code( bin: DataView ): ArrayBuffer {
 		const hc = new Uint32Array( [ 0x84222325, 0xcbf29ce4 ] ); // little-endian offset basis
@@ -43,8 +45,9 @@ export default class Hash_Code {
 	}
 
 	/**
-		Returns buffer containing SHA256 256-bit hash code
+		Returns the buffer containing SHA256 256-bit hash code
 		@param bin binary to hash
+		@returns the buffer containing SHA256 256-bit hash code
 	*/
 	static get_sha256_hash_code( bin: DataView ): ArrayBuffer {
 		const bc = Math.ceil( ( bin.byteLength + 1 + 8 ) / 64 );	// block count
@@ -70,7 +73,7 @@ export default class Hash_Code {
 			for ( let wi = 16; wi < 64; ++wi ) {	// word index to extend data in worksheet
 				const s15 = w[ wi - 15 ];
 				const s2 = w[ wi - 2 ];
-				const s0 = ( Bit_Operation.rotate_nat32_right( s15, 7 ) ^ Bit_Operation.rotate_nat32_right( s15, 18) ^ ( s15 >>> 3 ) ) >>> 0;
+				const s0 = ( Bit_Operation.rotate_nat32_right( s15, 7 ) ^ Bit_Operation.rotate_nat32_right( s15, 18 ) ^ ( s15 >>> 3 ) ) >>> 0;
 				const s1 = ( Bit_Operation.rotate_nat32_right( s2, 17 ) ^ Bit_Operation.rotate_nat32_right( s2, 19 ) ^ ( s2 >>> 10 ) ) >>> 0;
 				w[ wi ] = ( w[ wi - 16 ] + s0 + w[ wi - 7 ] + s1 ) >>> 0;
 			}
@@ -78,24 +81,24 @@ export default class Hash_Code {
 				v[ i ] = h[ i ];
 			}
 			for ( let wi = 0; wi < 64; ++wi ) {	// word index to perform compression loop
-				const s1 = ( Bit_Operation.rotate_nat32_right( v[ 4 ] /*e*/, 6 ) ^
-					Bit_Operation.rotate_nat32_right( v[ 4 ] /*e*/, 11 ) ^
-					Bit_Operation.rotate_nat32_right( v[ 4 ] /*e*/, 25 ) ) >>> 0;
-				const ch = ( ( v[ 4 ] /*e*/ & v[ 5 ] /*f*/ ) ^ ( ( ~v[ 4 ] /*e*/ ) & v[ 6 ] /*g*/ ) ) >>> 0;
-				const t1 = ( v[ 7 ] /*h*/ + s1 + ch + _SHA256_K[ wi ] + w[ wi ] ) >>> 0;
-				const s0 = ( Bit_Operation.rotate_nat32_right( v[ 0 ] /*a*/, 2 ) ^
-					Bit_Operation.rotate_nat32_right( v[ 0 ] /*a*/, 13 ) ^
-					Bit_Operation.rotate_nat32_right( v[ 0 ] /*a*/, 22 ) ) >>> 0;
-				const maj = ( ( v[ 0 ] /*a*/ & v[ 1 ] /*b*/ ) ^ ( v[ 0 ] /*a*/ & v[ 2 ] /*c*/ ) ^ ( v[ 1 ] /*b*/ & v[ 2 ] /*c*/ ) ) >>> 0;
+				const s1 = ( Bit_Operation.rotate_nat32_right( v[ 4 ] /* e */, 6 ) ^
+					Bit_Operation.rotate_nat32_right( v[ 4 ] /* e */, 11 ) ^
+					Bit_Operation.rotate_nat32_right( v[ 4 ] /* e */, 25 ) ) >>> 0;
+				const ch = ( ( v[ 4 ] /* e */ & v[ 5 ] /* f */ ) ^ ( ( ~v[ 4 ] /* e */ ) & v[ 6 ] /* g */ ) ) >>> 0;
+				const t1 = ( v[ 7 ] /* h */ + s1 + ch + _SHA256_K[ wi ] + w[ wi ] ) >>> 0;
+				const s0 = ( Bit_Operation.rotate_nat32_right( v[ 0 ] /* a */, 2 ) ^
+					Bit_Operation.rotate_nat32_right( v[ 0 ] /* a */, 13 ) ^
+					Bit_Operation.rotate_nat32_right( v[ 0 ] /* a */, 22 ) ) >>> 0;
+				const maj = ( ( v[ 0 ] /* a */ & v[ 1 ] /* b */ ) ^ ( v[ 0 ] /* a */ & v[ 2 ] /* c */ ) ^ ( v[ 1 ] /* b */ & v[ 2 ] /* c */ ) ) >>> 0;
 				const t2 = ( s0 + maj ) >>> 0;
-				v[ 7 ] /*h*/ = v[ 6 ] /*g*/;
-				v[ 6 ] /*g*/ = v[ 5 ] /*f*/;
-				v[ 5 ] /*f*/ = v[ 4 ] /*e*/;
-				v[ 4 ] /*e*/ = ( v[ 3 ] /*d*/ + t1 ) >>> 0;
-				v[ 3 ] /*d*/ = v[ 2 ] /*c*/;
-				v[ 2 ] /*c*/ = v[ 1 ] /*b*/;
-				v[ 1 ] /*b*/ = v[ 0 ] /*a*/;
-				v[ 0 ] /*a*/ = ( t1 + t2 ) >>> 0;
+				v[ 7 ] /* h */ = v[ 6 ]; /* g */
+				v[ 6 ] /* g */ = v[ 5 ]; /* f */
+				v[ 5 ] /* f */ = v[ 4 ]; /* e */
+				v[ 4 ] /* e */ = ( v[ 3 ] /* d */ + t1 ) >>> 0;
+				v[ 3 ] /* d */ = v[ 2 ]; /* c */
+				v[ 2 ] /* c */ = v[ 1 ]; /* b */
+				v[ 1 ] /* b */ = v[ 0 ]; /* a */
+				v[ 0 ] /* a */ = ( t1 + t2 ) >>> 0;
 			}
 			for ( let i = 0; i < 8; ++i ) {
 				h[ i ] = ( h[ i ] + v[ i ] ) >>> 0;

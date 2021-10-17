@@ -1,4 +1,4 @@
-import Data_Transformation from "../export/data-transformation";
+import { Data_Transformation } from '../data-transformation';
 
 export class Data_Transformation_Test {
 

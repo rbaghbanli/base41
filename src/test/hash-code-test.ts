@@ -1,5 +1,5 @@
-import Hash_Code from '../export/hash-code';
-import Data_Transformation from "../export/data-transformation";
+import { Hash_Code } from '../hash-code';
+import { Data_Transformation } from '../data-transformation';
 
 export class Hash_Code_Test {
 

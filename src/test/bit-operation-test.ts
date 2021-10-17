@@ -1,4 +1,4 @@
-import Bit_Operation from '../export/bit-operation';
+import { Bit_Operation } from '../bit-operation';
 
 export class Bit_Operation_Test {
 

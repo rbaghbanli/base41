@@ -1,4 +1,4 @@
-export { default as Data_Transformation } from './export/data-transformation';
-export { default as Bit_Operation } from './export/bit-operation';
-export { default as Hash_Code } from './export/hash-code';
-export { default as Random_Number } from './export/random-number';
+export { Data_Transformation } from './data-transformation';
+export { Bit_Operation } from './bit-operation';
+export { Hash_Code } from './hash-code';
+export { Random_Number } from './random-number';
