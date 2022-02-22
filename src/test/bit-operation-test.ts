@@ -2,7 +2,7 @@ import { Bit_Operation } from '../bit-operation';
 
 export class Bit_Operation_Test {
 
-	test_rotate_nat32(): number {
+	test_rotate_uint32(): number {
 		let passed = 0, failed = 0;
 		console.log( `test binary.test_rotate_nat32 started` );
 		[
@@ -17,7 +17,7 @@ export class Bit_Operation_Test {
 		].forEach( prm => {
 			const num: number = prm[ 0 ];
 			const shift: number = prm[ 1 ];
-			const v = Bit_Operation.rotate_nat32_left( Bit_Operation.rotate_nat32_right( num, shift ), shift );
+			const v = Bit_Operation.rotate_uint32_left( Bit_Operation.rotate_uint32_right( num, shift ), shift );
 			if ( v === num ) {
 				++passed;
 			}

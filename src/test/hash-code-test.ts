@@ -26,7 +26,7 @@ export class Hash_Code_Test {
 			const str: string = prm[ 1 ];
 			const bin = Data_Transformation.get_buffer_from_string( str, 'ascii' );
 			const hc = Hash_Code.get_sha256_hash_code( new DataView( bin ) );
-			const v = Data_Transformation.get_string_from_binary( new DataView( hc ), 'base16' );
+			const v = Data_Transformation.get_string_from_data( new DataView( hc ), 'base16' );
 			if ( v === hash ) {
 				++passed;
 			}
