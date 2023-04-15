@@ -29,6 +29,10 @@
 		"FNV1A32 hash code",
 		"FNV1A64 hash code",
 		"SHA256 hash code",
+		"json string",
+		"json bigint",
+		"json date",
+		"json time",
 		"random number"
 	],
 	"scripts": {
