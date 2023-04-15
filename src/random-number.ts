@@ -1,26 +1,29 @@
-export const RANDOM_NUMBER_MAX_UINT32 = -1 >>> 0;
+const _UINT32_UPPER_BOUND = 1 + ( -1 >>> 0 );
 
-export class Random_Number {
+export class RandomNumber {
 
 	/**
 		Returns random 32-bit unsigned integer
+		@returns random unsigned 32 bit integer
 	*/
-	static get random_uint32(): number {
-		return Math.floor( ( ( ( new Date() ).getTime() % 1000000 ) / 1000000 ) * Math.random() * RANDOM_NUMBER_MAX_UINT32 );
+	static getRandomUint32(): number {
+		return this.getRandomUint( _UINT32_UPPER_BOUND );
 	}
 
 	/**
 		Returns random 64-bit unsigned integer
+		@returns random unsigned 64 bit integer
 	*/
-	static get random_uint64(): bigint {
-		return ( BigInt( Random_Number.random_uint32 ) << 32n ) + BigInt( Random_Number.random_uint32 );
+	static getRandomUint64(): bigint {
+		return ( BigInt( RandomNumber.getRandomUint32() ) << 32n ) + BigInt( RandomNumber.getRandomUint32() );
 	}
 
 	/**
 		Returns random 128-bit unsigned integer
+		@returns random unsigned 128 bit integer
 	*/
-	static get random_uint128(): bigint {
-		return ( Random_Number.random_uint64 << 64n ) + Random_Number.random_uint64;
+	static getRandomUint128(): bigint {
+		return ( RandomNumber.getRandomUint64() << 64n ) + RandomNumber.getRandomUint64();
 	}
 
 	/**
@@ -28,8 +31,8 @@ export class Random_Number {
 		@param max upper exclusive bound of generated random number
 		@returns random unsigned integer between 0 and specified value
 	*/
-	static get_random_uint( max: number ): number {
-		return Math.floor( ( ( ( new Date() ).getTime() % RANDOM_NUMBER_MAX_UINT32 ) / RANDOM_NUMBER_MAX_UINT32 ) * Math.random() * max );
+	static getRandomUint( max: number ): number {
+		return Math.floor( Math.random() * max );
 	}
 
 }

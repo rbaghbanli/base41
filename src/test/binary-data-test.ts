@@ -1,10 +1,38 @@
-import { Data_Transformation } from '../data-transformation';
+import { BinaryData } from '../binary-data';
 
-export class Data_Transformation_Test {
+export class BinaryDataTest {
 
-	test_buffer_string(): number {
+	testRotateUint32Bits(): number {
 		let passed = 0, failed = 0;
-		console.log( `test binary.test_buffer_string started` );
+		console.log( `testRotateUint32Bits started` );
+		[
+			[ 0, 0 ],
+			[ 1, 0 ],
+			[ 45454, 18 ],
+			[ 11, 0x500 ],
+			[ 0xffffffff, 3 ],
+			[ 0xf0000000, 5 ],
+			[ 0xff00ff00, 10 ],
+			[ 0xff00fa00, 31 ],
+		].forEach( prm => {
+			const num: number = prm[ 0 ];
+			const shift: number = prm[ 1 ];
+			const v = BinaryData.rotateUint32BitsLeft( BinaryData.rotateUint32BitsRight( num, shift ), shift );
+			if ( v === num ) {
+				++passed;
+			}
+			else {
+				console.error( `testRotateUint32Bits failed on ${ v } expected ${ num }` );
+				++failed;
+			}
+		} );
+		console.log( `testRotateUint32Bits finished: passed ${ passed } failed ${ failed }` );
+		return failed;
+	}
+
+	testBufferString(): number {
+		let passed = 0, failed = 0;
+		console.log( `testBufferString started` );
 		[
 			[ [], 'base16' ],
 			[ [ 0 ], 'base16' ],
@@ -42,17 +70,17 @@ export class Data_Transformation_Test {
 			const bin = new Uint8Array( prm[ 0 ] as number[] );
 			const enc = prm[ 1 ] as 'base16'|'base41'|'ascii'|'ucs2';
 			const lend: boolean = prm[ 2 ] as boolean;
-			const str = Data_Transformation.get_string_from_data( new DataView( bin.buffer ), enc, lend );
-			const v = new Uint8Array( Data_Transformation.get_buffer_from_string( str, enc, lend ) );
-			if ( Data_Transformation.equal_data( new DataView( v.buffer ), new DataView( bin.buffer ) ) ) {
+			const str = BinaryData.getString( new DataView( bin.buffer ), enc, lend );
+			const v = new Uint8Array( BinaryData.getBuffer( str, enc, lend ) );
+			if ( BinaryData.equateData( new DataView( v.buffer ), new DataView( bin.buffer ) ) ) {
 				++passed;
 			}
 			else {
-				console.error( `test binary.test_buffer_string failed on ${ v } expected ${ bin } for ${ enc }` );
+				console.error( `testBufferString failed on ${ v } expected ${ bin } for ${ enc }` );
 				++failed;
 			}
 		} );
-		console.log( `test binary.test_buffer_string finished: passed ${ passed } failed ${ failed }` );
+		console.log( `testBufferString finished: passed ${ passed } failed ${ failed }` );
 		return failed;
 	}
 

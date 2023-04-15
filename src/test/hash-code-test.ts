@@ -1,11 +1,11 @@
-import { Hash_Code } from '../hash-code';
-import { Data_Transformation } from '../data-transformation';
+import { HashCode } from '../hash-code';
+import { BinaryData } from '../binary-data';
 
-export class Hash_Code_Test {
+export class HashCodeTest {
 
-	test_sha256_hash_code(): number {
+	testSha256HashCode(): number {
 		let passed = 0, failed = 0;
-		console.log( `test crypto.test_sha256_hashcode started` );
+		console.log( `testSha256HashCode started` );
 		[
 			[ 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', '' ],
 			[ 'fb460d2638d29a363b0ef6cdd75ae654f302611dcfe2556fb4612ff4fe85b127', 'Test String for SHA256' ],
@@ -24,18 +24,18 @@ export class Hash_Code_Test {
 		].forEach( prm => {
 			const hash: string = prm[ 0 ];
 			const str: string = prm[ 1 ];
-			const bin = Data_Transformation.get_buffer_from_string( str, 'ascii' );
-			const hc = Hash_Code.get_sha256_hash_code( new DataView( bin ) );
-			const v = Data_Transformation.get_string_from_data( new DataView( hc ), 'base16' );
+			const bin = BinaryData.getBuffer( str, 'ascii' );
+			const hc = HashCode.getSha256HashCodeBuffer( new DataView( bin ) );
+			const v = BinaryData.getString( new DataView( hc ), 'base16' );
 			if ( v === hash ) {
 				++passed;
 			}
 			else {
-				console.error( `test crypto.test_sha256_hashcode failed on ${ v } expected ${ hash } text length ${ str.length }` );
+				console.error( `testSha256HashCode failed on ${ v } expected ${ hash } text length ${ str.length }` );
 				++failed;
 			}
 		} );
-		console.log( `test crypto.test_sha256_hashcode finished: passed ${ passed } failed ${ failed }` );
+		console.log( `testSha256HashCode finished: passed ${ passed } failed ${ failed }` );
 		return failed;
 	}
 

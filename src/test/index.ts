@@ -1,10 +1,17 @@
-import { Bit_Operation_Test } from './bit-operation-test';
-import { Data_Transformation_Test } from './data-transformation-test';
-import { Hash_Code_Test } from './hash-code-test';
+import { DateTimeTest } from './date-time-test';
+import { BinaryDataTest } from './binary-data-test';
+import { HashCodeTest } from './hash-code-test';
+import { JsonStringTest } from './json-string-test';
+import { RandomNumberTest } from './random-number-test';
 
-const test1 = new Bit_Operation_Test();
-test1.test_rotate_uint32();
-const test2 = new Data_Transformation_Test();
-test2.test_buffer_string();
-const test3 = new Hash_Code_Test();
-test3.test_sha256_hash_code();
+const test1 = new DateTimeTest();
+test1.testDateTimeString();
+const test2 = new BinaryDataTest();
+test2.testRotateUint32Bits();
+test2.testBufferString();
+const test3 = new HashCodeTest();
+test3.testSha256HashCode();
+const test4 = new JsonStringTest();
+test4.testJsonString();
+const test5 = new RandomNumberTest();
+test5.testRandomNumber();

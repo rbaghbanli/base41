@@ -4,73 +4,85 @@ Ubiquitous Binary Data Transformation
 Set of ubiquitous binary data transformation functions, including encoding, bitwise and hash functions.
 
 
-## Bit Operation
+## BinaryData
 
-### Bit_Operation.rotate_uint32_left
+### rotateUint32BitsLeft
 Returns the result of bit rotation of 32-bit unsigned integer to left
 
-### Bit_Operation.rotate_uint32_right
+### rotateUint32BitsRight
 Returns the result of bit rotation of 32-bit unsigned integer to right
 
-
-## Data Transformation
-
-### Data_Transformation.get_date_string
-Returns YYYY-MM-DD date string
-
-### Data_Transformation.get_time_string
-Returns HH:MM:SS time string
-
-### Data_Transformation.equal_data
+### equateData
 Returns true if two byte sequences contain the same bytes, false otherwise
 
-### Data_Transformation.get_base16_dyad
+### getBase16Dyad
 Returns base 16 dyad string for code point
 
-### Data_Transformation.get_base16_dyad_code_at
+### getBase16DyadCodeAt
 Returns code point of base 16 dyad string
 
-### Data_Transformation.get_base41_triad
+### getBase41Triad
 Returns base 41 triad string for code point
 
-### Data_Transformation.get_base41_triad_code_at
+### getBase41TriadCodeAt
 Returns code point of base 41 triad string
 
-### Data_Transformation.get_data_length_from_string
+### getDataLength
 Returns the number of decoded bytes in string containing encoded bytes
 
-### Data_Transformation.get_string_from_data
+### getString
 Returns the string containing encoded bytes
 
-### Data_Transformation.get_buffer_from_string
+### getBuffer
 Returns the buffer containing decoded bytes
 
-### Data_Transformation.set_data_from_string
+### setData
 Returns the binary set with decoded bytes
 
 
-## Hash Code
+## DateTime
 
-### Hash_Code.get_fnv1a32_hash_code
+### getDateString / getUtcDateString
+Returns YYYY-MM-DD date string
+
+### getTimeString / getUtcTimeString
+Returns HH:MM:SS time string
+
+### getDateTimeString / getUtcDateTimeString
+Returns YYYY-MM-DD HH:MM:SS date-time string
+
+
+## HashCode
+
+### getFnv1a32HashCode
 Returns little-endian FNV1A 32-bit hash code
 
-### Hash_Code.get_fnv1a64_hash_code
+### getFnv1a64HashCode
 Returns little-endian FNV1A 64-bit hash code
 
-### Hash_Code.get_sha256_hash_code
+### getSha256HashCodeBuffer
 Returns buffer containing SHA256 256-bit hash code
 
 
-## Random Number
+## JsonString
 
-### Random_Number.random_uint32
+### getString
+Returns JSON string with bigint and date values wrapped into objects
+
+### getObject
+Returns object with bigint and date values parsed from wrapping objects
+
+
+## RandomNumber
+
+### getRandomUint32
 Returns random 32-bit unsigned integer
 
-### Random_Number.random_uint64
+### getRandomUint64
 Returns random 64-bit unsigned integer
 
-### Random_Number.random_uint128
+### getRandomUint128
 Returns random 128-bit unsigned integer
 
-### Random_Number.get_random_uint
+### getRandomUint
 Returns random unsigned integer between 0 and specified value
