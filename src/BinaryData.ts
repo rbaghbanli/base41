@@ -10,7 +10,7 @@ const _BASE16_DYAD_DECODE_MAP = new Map<number, Map<number, number>>( Array.from
 		( i * 16 ) + ii
 	] ) )
 ] ) );
-const _BASE41_CHAR_ENCODE_STR = 'abcdefghijklmnopqrstuvwxyzLMNOPQRSTUVWXYZ';
+const _BASE41_CHAR_ENCODE_STR = '0123456789abcdefghijklmnopqrstuvwxyzABCDE';
 const _BASE41_CHAR_DECODE_MAP = new Map<number, number>( _BASE41_CHAR_ENCODE_STR.split( '' ).map( ( s, i ) => [ s.charCodeAt( 0 ), i ] ) );
 const _BASE41_TRIAD_ENCODE_MAP = new Map<number, string>( Array.from( Array( 65536 ).keys() ).map( i => {
 	const c1 = Math.trunc( i / 1681 );
@@ -52,12 +52,12 @@ export class BinaryData {
 	}
 
 	/**
-		Returns true if two byte sequences contain the same bytes, false otherwise
-		@param data1 first byte sequence to compare
-		@param data2 second byte sequence to compare
-		@returns true if two byte sequences contain the same bytes, false otherwise
+		Returns true if binary data sets contain the same bytes, false otherwise
+		@param data1 binary data to compare
+		@param data2 binary data to compare
+		@returns true if binary data sets contain the same bytes, false otherwise
 	*/
-	static equateData( data1: DataView | null | undefined, data2: DataView | null | undefined ): boolean {
+	static equateData( data1: DataView | ArrayBufferLike | null | undefined, data2: DataView | ArrayBufferLike | null | undefined ): boolean {
 		if ( data1 == null && data2 == null ) {
 			return true;
 		}
@@ -67,15 +67,17 @@ export class BinaryData {
 		if ( data1.byteLength !== data2.byteLength ) {
 			return false;
 		}
-		for ( let lfi = data1.byteLength - 3, i = 0; i < data1.byteLength; ) {
+		const dv1 = data1 instanceof DataView ? data1 : new DataView( data1 );
+		const dv2 = data2 instanceof DataView ? data2 : new DataView( data2 );
+		for ( let lfi = dv1.byteLength - 3, i = 0; i < dv1.byteLength; ) {
 			if ( i < lfi ) {
-				if ( data1.getUint32( i ) !== data2.getUint32( i ) ) {
+				if ( dv1.getUint32( i ) !== dv2.getUint32( i ) ) {
 					return false;
 				}
 				i += 4;
 			}
 			else {
-				if ( data1.getUint8( i ) !== data2.getUint8( i ) ) {
+				if ( dv1.getUint8( i ) !== dv2.getUint8( i ) ) {
 					return false;
 				}
 				++i;
@@ -126,7 +128,7 @@ export class BinaryData {
 
 	/**
 		Returns number of decoded bytes in string containing encoded data
-		@param str string containing encoded data
+		@param str string of provided encoding
 		@param encoding 'base16', 'base41', 'ascii', or 'ucs2'
 		@returns number of decoded bytes
 	*/
@@ -141,29 +143,30 @@ export class BinaryData {
 	}
 
 	/**
-		Returns string containing encoded data
-		@param data binary to encode
+		Returns encoded string
+		@param data binary data to encode
 		@param encoding 'base16', 'base41', 'ascii', or 'ucs2'
 		@param littleEndian true if little end first
-		@returns string containing encoded data
+		@returns encoded string
 	*/
-	static getString( data: DataView, encoding: 'base16'|'base41'|'ascii'|'ucs2' = 'ucs2', littleEndian?: boolean ): string {
+	static getString( data: DataView | ArrayBufferLike, encoding: 'base16'|'base41'|'ascii'|'ucs2' = 'ucs2', littleEndian?: boolean ): string {
+		const dv = data instanceof DataView ? data : new DataView( data );
 		switch ( encoding ) {
 			case 'base16': { // 2 characters per 1 byte
 				let str = '';
-				for ( let i = 0; i < data.byteLength; ++i ) {
-					str += _BASE16_DYAD_ENCODE_MAP.get( data.getUint8( i ) );
+				for ( let i = 0; i < dv.byteLength; ++i ) {
+					str += _BASE16_DYAD_ENCODE_MAP.get( dv.getUint8( i ) );
 				}
 				return str;
 			}
 			case 'base41': { // 3 characters per 2 bytes + 1 or 2 characters if trailing byte
 				let str = '';
-				for ( let lfi = data.byteLength - 1, i = 0; i < data.byteLength; i += 2 ) {
+				for ( let lfi = dv.byteLength - 1, i = 0; i < dv.byteLength; i += 2 ) {
 					if ( i < lfi ) {
-						str += _BASE41_TRIAD_ENCODE_MAP.get( data.getUint16( i, littleEndian ) );
+						str += _BASE41_TRIAD_ENCODE_MAP.get( dv.getUint16( i, littleEndian ) );
 					}
 					else {
-						const c = data.getUint8( i );
+						const c = dv.getUint8( i );
 						if ( c < 41 ) {
 							str += _BASE41_CHAR_ENCODE_STR.charAt( c );
 						}
@@ -177,20 +180,20 @@ export class BinaryData {
 			}
 			case 'ascii': { // 1 character per 1 bytes
 				let str = '';
-				for ( let i = 0; i < data.byteLength; ++i ) {
-					str += String.fromCharCode( data.getUint8( i ) );
+				for ( let i = 0; i < dv.byteLength; ++i ) {
+					str += String.fromCharCode( dv.getUint8( i ) );
 				}
 				return str;
 			}
 			default:
 			case 'ucs2': { // 1 character per 2 bytes + 1 character if trailing byte
 				let str = '';
-				for ( let lfi = data.byteLength - 1, i = 0; i < data.byteLength; i += 2 ) {
+				for ( let lfi = dv.byteLength - 1, i = 0; i < dv.byteLength; i += 2 ) {
 					if ( i < lfi ) {
-						str += String.fromCharCode( data.getUint16( i, littleEndian ) );
+						str += String.fromCharCode( dv.getUint16( i, littleEndian ) );
 					}
 					else {
-						str += String.fromCharCode( data.getUint8( i ) );
+						str += String.fromCharCode( dv.getUint8( i ) );
 					}
 				}
 				return str;
@@ -199,46 +202,34 @@ export class BinaryData {
 	}
 
 	/**
-		Returns the buffer containing decoded bytes
-		@param str string containing encoded binary
+		Decodes string into binary data
+		@param data sufficiently large destination binary data
+		@param str encoded string
 		@param encoding 'base16', 'base41', 'ascii', or 'ucs2'
 		@param littleEndian true if little end first
-		@returns the buffer containing decoded bytes
+		@returns decoded binary data
 	*/
-	static getBuffer( str: string, encoding: 'base16'|'base41'|'ascii'|'ucs2' = 'ucs2', littleEndian?: boolean ): ArrayBuffer {
-		return this.setData(
-			new DataView( new ArrayBuffer( this.getDataLength( str, encoding ) ) ), str, encoding, littleEndian
-		).buffer;
-	}
-
-	/**
-		Returns DataView set with decoded bytes
-		@param data DataView to set bytes
-		@param str string containing encoded binary
-		@param encoding 'base16', 'base41', 'ascii', or 'ucs2'
-		@param littleEndian true if little end first
-		@returns the binary set with decoded bytes
-	*/
-	static setData( data: DataView, str: string, encoding: 'base16'|'base41'|'ascii'|'ucs2' = 'ucs2', littleEndian?: boolean ): DataView {
+	static setData( data: DataView | ArrayBufferLike, str: string, encoding: 'base16'|'base41'|'ascii'|'ucs2' = 'ucs2', littleEndian?: boolean ): DataView {
+		const dv = data instanceof DataView ? data : new DataView( data );
 		switch ( encoding ) {
 			case 'base16': { // 1 byte per 2 characters + 1 byte if trailing character
 				for ( let lfi = str.length - 1, i = 0, bi = 0; i < str.length; ++i, ++bi ) {
 					if ( i < lfi ) {
-						data.setUint8(
+						dv.setUint8(
 							bi,
 							_BASE16_DYAD_DECODE_MAP.get( str.charCodeAt( i ) )?.get( str.charCodeAt( ++i ) ) ?? 0
 						);
 					}
 					else {
-						data.setUint8( bi, _BASE16_CHAR_DECODE_MAP.get( str.charCodeAt( i ) ) ?? 0 );
+						dv.setUint8( bi, _BASE16_CHAR_DECODE_MAP.get( str.charCodeAt( i ) ) ?? 0 );
 					}
 				}
-				return data;
+				return dv;
 			}
 			case 'base41': { // 2 bytes per 3 characters + 1 byte if trailing 1 or 2 characters
 				for ( let lfi = str.length - 2, i = 0, bi = 0; i < str.length; ++i, bi += 2 ) {
 					if ( i < lfi ) {
-						data.setUint16(
+						dv.setUint16(
 							bi,
 							_BASE41_TRIAD_DECODE_MAP.get( str.charCodeAt( i ) )?.get( str.charCodeAt( ++i ) )?.get( str.charCodeAt( ++i ) ) ?? 0,
 							littleEndian
@@ -249,25 +240,47 @@ export class BinaryData {
 						if ( ++i < str.length ) {
 							c = ( c * 41 ) + ( _BASE41_CHAR_DECODE_MAP.get( str.charCodeAt( i ) ) ?? 0 );
 						}
-						data.setUint8( bi, c );
+						dv.setUint8( bi, c );
 					}
 				}
-				return data;
+				return dv;
 			}
 			case 'ascii': { // 1 byte per 1 character
 				for ( let i = 0; i < str.length; ++i ) {
-					data.setUint8( i, str.charCodeAt( i ) );
+					dv.setUint8( i, str.charCodeAt( i ) );
 				}
-				return data;
+				return dv;
 			}
 			default:
 			case 'ucs2': { // 2 bytes per 1 character
 				for ( let i = 0, bi = 0; i < str.length; ++i, bi += 2 ) {
-					data.setUint16( bi, str.charCodeAt( i ), littleEndian );
+					dv.setUint16( bi, str.charCodeAt( i ), littleEndian );
 				}
-				return data;
+				return dv;
 			}
 		}
+	}
+
+	/**
+		Returns decoded binary data
+		@param str encoded string
+		@param encoding 'base16', 'base41', 'ascii', or 'ucs2'
+		@param littleEndian true if little end first
+		@returns decoded binary data
+	*/
+	static getData( str: string, encoding: 'base16'|'base41'|'ascii'|'ucs2' = 'ucs2', littleEndian?: boolean ): DataView {
+		return this.setData( new ArrayBuffer( this.getDataLength( str, encoding ) ), str, encoding, littleEndian );
+	}
+
+	/**
+		Returns decoded buffer
+		@param str encoded string
+		@param encoding 'base16', 'base41', 'ascii', or 'ucs2'
+		@param littleEndian true if little end first
+		@returns decoded buffer
+	*/
+	static getBuffer( str: string, encoding: 'base16'|'base41'|'ascii'|'ucs2' = 'ucs2', littleEndian?: boolean ): ArrayBuffer {
+		return this.setData( new ArrayBuffer( this.getDataLength( str, encoding ) ), str, encoding, littleEndian ).buffer;
 	}
 
 }

@@ -1,8 +1,8 @@
-import { DateTimeTest } from './date-time-test';
-import { BinaryDataTest } from './binary-data-test';
-import { HashCodeTest } from './hash-code-test';
-import { JsonStringTest } from './json-string-test';
-import { RandomNumberTest } from './random-number-test';
+import { DateTimeTest } from './DateTimeTest';
+import { BinaryDataTest } from './BinaryDataTest';
+import { HashCodeTest } from './HashCodeTest';
+import { JsonStringTest } from './JsonStringTest';
+import { RandomNumberTest } from './RandomNumberTest';
 
 const test1 = new DateTimeTest();
 test1.testDateTimeString();

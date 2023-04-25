@@ -1,10 +1,10 @@
-import { RandomNumber } from '../random-number';
+import { RandomNumber } from '../RandomNumber';
 
 export class RandomNumberTest {
 
 	testRandomNumber(): number {
 		let passed = 0, failed = 0;
-		console.log( `testRandomNumber started` );
+		console.log( `RandomNumberTest.testRandomNumber started` );
 		[
 			[ 1 ],
 			[ 2 ],
@@ -15,11 +15,11 @@ export class RandomNumberTest {
 				++passed;
 			}
 			else {
-				console.error( `testRandomNumber failed on ${ rnd } expected less than ${ prm[ 0 ] }` );
+				console.error( `test failed on ${ rnd } expected less than ${ prm[ 0 ] }` );
 				++failed;
 			}
 		} );
-		console.log( `testRandomNumber finished: passed ${ passed } failed ${ failed }` );
+		console.log( `RandomNumberTest.testRandomNumber finished: passed ${ passed } failed ${ failed }` );
 		return failed;
 	}
 

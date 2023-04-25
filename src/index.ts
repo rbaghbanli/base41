@@ -1,5 +1,5 @@
-export { BinaryData } from './binary-data';
-export { DateTime } from './date-time';
-export { HashCode } from './hash-code';
-export { JsonString } from './json-string';
-export { RandomNumber } from './random-number';
+export * from './BinaryData';
+export * from './DateTime';
+export * from './HashCode';
+export * from './JsonString';
+export * from './RandomNumber';

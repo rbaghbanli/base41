@@ -1,4 +1,4 @@
-import { BinaryData } from './binary-data';
+import { BinaryData } from './BinaryData';
 
 const _FNV32_PRIME = 16777619;
 const _FNV64_PRIME = new Uint32Array( [ 0x000001B3, 0x100 ] );

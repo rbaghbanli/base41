@@ -27,6 +27,21 @@ export class RandomNumber {
 	}
 
 	/**
+		Returns v4 UUID
+		@returns v4 UUID
+	*/
+	static getUuid(): bigint {
+		const bytes = new Uint8Array( 16 );
+		bytes.forEach( ( b, i ) => { bytes[ i ] = Math.random() * 256; } );
+		bytes[ 6 ] = ( bytes[ 6 ] & 0x0f ) | 0x40;
+		bytes[ 8 ] = ( bytes[ 8 ] & 0x3f ) | 0x80;
+
+		// TODO
+
+		return ( RandomNumber.getRandomUint64() << 64n ) + RandomNumber.getRandomUint64();
+	}
+
+	/**
 		Returns random unsigned integer between 0 and specified value
 		@param max upper exclusive bound of generated random number
 		@returns random unsigned integer between 0 and specified value

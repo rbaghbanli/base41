@@ -1,10 +1,10 @@
-import { BinaryData } from '../binary-data';
+import { BinaryData } from '../BinaryData';
 
 export class BinaryDataTest {
 
 	testRotateUint32Bits(): number {
 		let passed = 0, failed = 0;
-		console.log( `testRotateUint32Bits started` );
+		console.log( `BinaryDataTest.testRotateUint32Bits started` );
 		[
 			[ 0, 0 ],
 			[ 1, 0 ],
@@ -22,17 +22,17 @@ export class BinaryDataTest {
 				++passed;
 			}
 			else {
-				console.error( `testRotateUint32Bits failed on ${ v } expected ${ num }` );
+				console.error( `test failed on ${ v } expected ${ num }` );
 				++failed;
 			}
 		} );
-		console.log( `testRotateUint32Bits finished: passed ${ passed } failed ${ failed }` );
+		console.log( `BinaryDataTest.testRotateUint32Bits finished: passed ${ passed } failed ${ failed }` );
 		return failed;
 	}
 
 	testBufferString(): number {
 		let passed = 0, failed = 0;
-		console.log( `testBufferString started` );
+		console.log( `BinaryDataTest.testBufferString started` );
 		[
 			[ [], 'base16' ],
 			[ [ 0 ], 'base16' ],
@@ -76,11 +76,11 @@ export class BinaryDataTest {
 				++passed;
 			}
 			else {
-				console.error( `testBufferString failed on ${ v } expected ${ bin } for ${ enc }` );
+				console.error( `test failed on ${ v } expected ${ bin } for ${ enc }` );
 				++failed;
 			}
 		} );
-		console.log( `testBufferString finished: passed ${ passed } failed ${ failed }` );
+		console.log( `BinaryDataTest.testBufferString finished: passed ${ passed } failed ${ failed }` );
 		return failed;
 	}
 

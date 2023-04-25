@@ -1,6 +1,6 @@
 {
 	"name": "ubdt",
-	"version": "1.2.0",
+	"version": "2.0.0",
 	"description": "Ubiquitous Binady Data Transformation",
 	"main": "dst/index.js",
 	"types": "dst/index.d.ts",
@@ -18,9 +18,9 @@
 		"Binary",
 		"Data",
 		"Transformation",
-		"bit operation",
 		"bit rotation",
 		"binary data",
+		"equate binary data",
 		"base16 encoding",
 		"base41 encoding",
 		"buffer string",
@@ -32,11 +32,14 @@
 		"json string",
 		"json bigint",
 		"json date",
-		"json time",
+		"json set",
+		"json map",
+		"json DateView",
+		"json ArrayBuffer",
 		"random number"
 	],
 	"scripts": {
-		"clean": "rimraf dst/* && rimraf *.tgz",
+		"clean": "rimraf --glob dst/* && rimraf --glob *.tgz",
 		"lint": "eslint ./src --ext .ts",
 		"prebuild": "npm run clean",
 		"build": "tsc --build",
@@ -53,10 +56,10 @@
 	},
 	"dependencies": {},
 	"devDependencies": {
-		"@typescript-eslint/parser": "~5.12.1",
-		"@typescript-eslint/eslint-plugin": "~5.12.1",
-		"eslint": "~8.9.0",
-		"rimraf": "~3.0.2",
-		"typescript": "~4.4.4"
+		"@typescript-eslint/parser": "~5.59.1",
+		"@typescript-eslint/eslint-plugin": "~5.59.1",
+		"eslint": "~8.39.0",
+		"rimraf": "~5.0.0",
+		"typescript": "~4.7.4"
 	}
 }

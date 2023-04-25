@@ -1,11 +1,11 @@
-import { HashCode } from '../hash-code';
-import { BinaryData } from '../binary-data';
+import { HashCode } from '../HashCode';
+import { BinaryData } from '../BinaryData';
 
 export class HashCodeTest {
 
 	testSha256HashCode(): number {
 		let passed = 0, failed = 0;
-		console.log( `testSha256HashCode started` );
+		console.log( `HashCodeTest.testSha256HashCode started` );
 		[
 			[ 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', '' ],
 			[ 'fb460d2638d29a363b0ef6cdd75ae654f302611dcfe2556fb4612ff4fe85b127', 'Test String for SHA256' ],
@@ -31,11 +31,11 @@ export class HashCodeTest {
 				++passed;
 			}
 			else {
-				console.error( `testSha256HashCode failed on ${ v } expected ${ hash } text length ${ str.length }` );
+				console.error( `test failed on ${ v } expected ${ hash } text length ${ str.length }` );
 				++failed;
 			}
 		} );
-		console.log( `testSha256HashCode finished: passed ${ passed } failed ${ failed }` );
+		console.log( `HashCodeTest.testSha256HashCode finished: passed ${ passed } failed ${ failed }` );
 		return failed;
 	}
 

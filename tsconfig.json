@@ -10,6 +10,7 @@
 		"module": "commonjs",
 		"moduleResolution": "node",
 		"noImplicitReturns": true,
+		"noImplicitThis": true,
 		"outDir": "./dst",
 		"sourceMap": false,
 		"strict": true,

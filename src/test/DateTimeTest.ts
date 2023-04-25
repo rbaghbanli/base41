@@ -1,10 +1,10 @@
-import { DateTime } from '../date-time';
+import { DateTime } from '../DateTime';
 
 export class DateTimeTest {
 
 	testDateTimeString(): number {
 		let passed = 0, failed = 0;
-		console.log( `testDateTimeString started` );
+		console.log( `DateTimeTest.testDateTimeString started` );
 		[
 			[ '2000-01-02 23:24:25' ],
 			[ '1000-01-02 23:24:25' ],
@@ -16,11 +16,11 @@ export class DateTimeTest {
 				++passed;
 			}
 			else {
-				console.error( `testDateTimeString failed on ${ v } expected ${ prm[ 0 ] }` );
+				console.error( `test failed on ${ v } expected ${ prm[ 0 ] }` );
 				++failed;
 			}
 		} );
-		console.log( `testDateTimeString finished: passed ${ passed } failed ${ failed }` );
+		console.log( `DateTimeTest.testDateTimeString finished: passed ${ passed } failed ${ failed }` );
 		return failed;
 	}
 
