@@ -130,7 +130,8 @@ export class BinaryData {
 		@param encoding 'base16', 'base41', 'ascii', or 'ucs2'
 		@returns number of bytes
 	*/
-	static getStringBufferByteLength( value: string, encoding: 'base16' | 'base41' | 'ascii' | 'ucs2' = 'ucs2' ): number {
+	static getStringBufferByteLength( value: string,
+		encoding: 'base16' | 'base41' | 'ascii' | 'ucs2' = 'ucs2' ): number {
 		switch ( encoding ) {
 			case 'base16': return Math.ceil( value.length / 2 );
 			case 'base41': return Math.round( value.length * 2 / 3 );
@@ -147,7 +148,8 @@ export class BinaryData {
 		@param littleEndian true if little end first
 		@returns decoded string
 	*/
-	static getString( data: DataView | ArrayBufferLike, encoding: 'base16' | 'base41' | 'ascii' | 'ucs2' = 'ucs2', littleEndian?: boolean ): string {
+	static getString( data: DataView | ArrayBufferLike,
+		encoding: 'base16' | 'base41' | 'ascii' | 'ucs2' = 'ucs2', littleEndian?: boolean ): string {
 		const dv = data instanceof DataView ? data : new DataView( data );
 		switch ( encoding ) {
 			case 'base16': { // 2 characters per 1 byte
@@ -206,7 +208,8 @@ export class BinaryData {
 		@param littleEndian true if little end first
 		@returns encoded buffer
 	*/
-	static getStringBuffer( value: string, encoding: 'base16' | 'base41' | 'ascii' | 'ucs2' = 'ucs2', littleEndian?: boolean ): ArrayBuffer {
+	static getStringBuffer( value: string,
+		encoding: 'base16' | 'base41' | 'ascii' | 'ucs2' = 'ucs2', littleEndian?: boolean ): ArrayBuffer {
 		return this.setStringBuffer( new ArrayBuffer( this.getStringBufferByteLength( value, encoding ) ), value, encoding, littleEndian );
 	}
 
@@ -218,9 +221,10 @@ export class BinaryData {
 		@param littleEndian true if little end first
 		@returns decoded binary data
 	*/
-	static setStringBuffer( data: DataView | ArrayBufferLike, value: string, encoding: 'base16' | 'base41' | 'ascii' | 'ucs2' = 'ucs2', littleEndian?: boolean ): ArrayBuffer {
+	static setStringBuffer( data: DataView | ArrayBufferLike, value: string,
+		encoding: 'base16' | 'base41' | 'ascii' | 'ucs2' = 'ucs2', littleEndian?: boolean ): ArrayBuffer {
 		if ( data.byteLength < this.getStringBufferByteLength( value, encoding ) ) {
-			throw new RangeError( 'insufficient destination binary data length' )
+			throw new RangeError( 'insufficient destination binary data length' );
 		}
 		const dv = data instanceof DataView ? data : new DataView( data );
 		switch ( encoding ) {
@@ -280,11 +284,11 @@ export class BinaryData {
 	*/
 	static getBigInt( data: DataView | ArrayBufferLike ): bigint {
 		const dv = data instanceof DataView ? data : new DataView( data );
-		let value = 0n;
+		let v = 0n;
 		for ( let i = 0; i < dv.byteLength; ++i ) {
-			value = ( value << 8n ) + BigInt( dv.getUint8( i ) );
+			v = ( v << 8n ) + BigInt( dv.getUint8( i ) );
 		}
-		return value;
+		return v;
 	}
 
 	/**
@@ -305,9 +309,10 @@ export class BinaryData {
 	*/
 	static setBigIntBuffer( data: DataView | ArrayBufferLike, value: bigint ): ArrayBuffer {
 		const dv = data instanceof DataView ? data : new DataView( data );
+		let v = value;
 		for ( let i = 0; i < dv.byteLength; ++i ) {
-			dv.setUint8( i, Number( value & 0xffn ) );
-			value = value >> 8n;
+			dv.setUint8( i, Number( v & 0xffn ) );
+			v >>= 8n;
 		}
 		return dv.buffer;
 	}

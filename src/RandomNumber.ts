@@ -55,7 +55,8 @@ export class RandomNumber {
 			let byte = Math.floor( Math.random() * 256 );
 			if ( i === 6 ) {
 				byte = ( byte & 0x0f ) | 0x40;
-			} else if ( i === 8 ) {
+			}
+			else if ( i === 8 ) {
 				byte = ( byte & 0x3f ) | 0x80;
 			}
 			uuid = ( uuid << 8n ) + BigInt( byte );

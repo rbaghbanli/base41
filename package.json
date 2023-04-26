@@ -41,6 +41,7 @@
 	"scripts": {
 		"clean": "rimraf --glob dst/* && rimraf --glob *.tgz",
 		"lint": "eslint ./src --ext .ts",
+		"lint-fix": "eslint ./src --ext .ts --fix",
 		"prebuild": "npm run clean",
 		"build": "tsc --build",
 		"predebug": "npm run clean",
