@@ -39,19 +39,19 @@ export class JsonString {
 				return new Map( value.__json__map__ );
 			}
 			if ( '__json__dataview__' in value && typeof value.__json__dataview__ === 'string' ) {
-				return BinaryData.getData( value.__json__dataview__, 'base41' );
+				return new DataView( BinaryData.getStringBuffer( value.__json__dataview__, 'base41' ) );
 			}
 			if ( '__json__arraybuffer__' in value && typeof value.__json__arraybuffer__ === 'string' ) {
-				return BinaryData.getBuffer( value.__json__arraybuffer__, 'base41' );
+				return BinaryData.getStringBuffer( value.__json__arraybuffer__, 'base41' );
 			}
 		}
 		return value;
 	}
 
 	/**
-		Returns JSON string with bigint, date, set, and map values wrapped into objects
+		Returns JSON string with bigint, date, set, map, DataView and ArrayBuffer values wrapped into objects
 		@param value object to stringify
-		@param space adds indentation, white space, and line break characters to the return-valueks
+		@param space adds indentation, white space, and line break characters to the return-value
 		@returns JSON string
 	*/
 	static getString<T = any>( value: T, space?: number | string ): string {
@@ -59,7 +59,7 @@ export class JsonString {
 	}
 
 	/**
-		Returns object with bigint, date, set, and map values parsed from wrapping objects
+		Returns object with bigint, date, set, map, DataView and ArrayBuffer values parsed from wrapper objects
 		@param value string to parse
 		@returns parsed object
 	*/

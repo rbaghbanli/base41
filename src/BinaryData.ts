@@ -33,22 +33,22 @@ export class BinaryData {
 
 	/**
 		Returns the result of bit rotation of 32-bit natural number to left
-		@param num 32-bit number
+		@param value 32-bit number
 		@param shift number of bits to rotate by
 		@returns the result of bit rotation of 32-bit natural number to left
 	*/
-	static rotateUint32BitsLeft( num: number, shift: number ): number {
-		return ( ( num << shift ) | ( num >>> ( 32 - shift ) ) ) >>> 0;
+	static rotateUint32BitsLeft( value: number, shift: number ): number {
+		return ( ( value << shift ) | ( value >>> ( 32 - shift ) ) ) >>> 0;
 	}
 
 	/**
 		Returns the result of bit rotation of 32-bit natural number to right
-		@param num 32-bit number
+		@param value 32-bit number
 		@param shift number of bits to rotate by
 		@returns the result of bit rotation of 32-bit natural number to right
 	*/
-	static rotateUint32BitsRight( num: number, shift: number ): number {
-		return ( ( num >>> shift ) | ( num << ( 32 - shift ) ) ) >>> 0;
+	static rotateUint32BitsRight( value: number, shift: number ): number {
+		return ( ( value >>> shift ) | ( value << ( 32 - shift ) ) ) >>> 0;
 	}
 
 	/**
@@ -97,12 +97,12 @@ export class BinaryData {
 
 	/**
 		Returns the code point of base 16 dyad string
-		@param str base 16 string
+		@param value base 16 string
 		@param ix index of dyad
 		@returns code point of base 16 dyad string
 	*/
-	static getBase16DyadCodeAt( str: string, ix: number ): number | undefined {
-		return _BASE16_DYAD_DECODE_MAP.get( str.charCodeAt( ix ) )?.get( str.charCodeAt( ix + 1 ) );
+	static getBase16DyadCodeAt( value: string, ix: number ): number | undefined {
+		return _BASE16_DYAD_DECODE_MAP.get( value.charCodeAt( ix ) )?.get( value.charCodeAt( ix + 1 ) );
 	}
 
 	/**
@@ -116,40 +116,38 @@ export class BinaryData {
 
 	/**
 		Returns code point of base 41 triad string
-		@param str base 41 string
+		@param value base 41 string
 		@param ix index of triad
 		@returns code point of base 41 triad string
 	*/
-	static getBase41TriadCodeAt( str: string, ix: number ): number | undefined {
-		return _BASE41_TRIAD_DECODE_MAP.get(
-			str.charCodeAt( ix ) )?.get( str.charCodeAt( ix + 1 ) )?.get( str.charCodeAt( ix + 2 )
-		);
+	static getBase41TriadCodeAt( value: string, ix: number ): number | undefined {
+		return _BASE41_TRIAD_DECODE_MAP.get( value.charCodeAt( ix ) )?.get( value.charCodeAt( ix + 1 ) )?.get( value.charCodeAt( ix + 2 ) );
 	}
 
 	/**
-		Returns number of decoded bytes in string containing encoded data
-		@param str string of provided encoding
+		Returns the number of bytes in encoded string
+		@param value string of specified encoding
 		@param encoding 'base16', 'base41', 'ascii', or 'ucs2'
-		@returns number of decoded bytes
+		@returns number of bytes
 	*/
-	static getDataLength( str: string, encoding: 'base16'|'base41'|'ascii'|'ucs2' = 'ucs2' ): number {
+	static getStringBufferByteLength( value: string, encoding: 'base16' | 'base41' | 'ascii' | 'ucs2' = 'ucs2' ): number {
 		switch ( encoding ) {
-			case 'base16': return Math.ceil( str.length / 2 );
-			case 'base41': return Math.round( str.length * 2 / 3 );
-			case 'ascii': return str.length;
+			case 'base16': return Math.ceil( value.length / 2 );
+			case 'base41': return Math.round( value.length * 2 / 3 );
+			case 'ascii': return value.length;
 			default:
-			case 'ucs2': return str.length * 2;
+			case 'ucs2': return value.length * 2;
 		}
 	}
 
 	/**
-		Returns encoded string
-		@param data binary data to encode
+		Returns string of specified encoding
+		@param data buffer to decode
 		@param encoding 'base16', 'base41', 'ascii', or 'ucs2'
 		@param littleEndian true if little end first
-		@returns encoded string
+		@returns decoded string
 	*/
-	static getString( data: DataView | ArrayBufferLike, encoding: 'base16'|'base41'|'ascii'|'ucs2' = 'ucs2', littleEndian?: boolean ): string {
+	static getString( data: DataView | ArrayBufferLike, encoding: 'base16' | 'base41' | 'ascii' | 'ucs2' = 'ucs2', littleEndian?: boolean ): string {
 		const dv = data instanceof DataView ? data : new DataView( data );
 		switch ( encoding ) {
 			case 'base16': { // 2 characters per 1 byte
@@ -202,85 +200,116 @@ export class BinaryData {
 	}
 
 	/**
-		Decodes string into binary data
-		@param data sufficiently large destination binary data
-		@param str encoded string
+		Returns buffer of the string of specified encoding
+		@param value string to encode
+		@param encoding 'base16', 'base41', 'ascii', or 'ucs2'
+		@param littleEndian true if little end first
+		@returns encoded buffer
+	*/
+	static getStringBuffer( value: string, encoding: 'base16' | 'base41' | 'ascii' | 'ucs2' = 'ucs2', littleEndian?: boolean ): ArrayBuffer {
+		return this.setStringBuffer( new ArrayBuffer( this.getStringBufferByteLength( value, encoding ) ), value, encoding, littleEndian );
+	}
+
+	/**
+		Sets buffer bytes from the string of specified encoding
+		@param data sufficiently long destination buffer
+		@param value string to encode
 		@param encoding 'base16', 'base41', 'ascii', or 'ucs2'
 		@param littleEndian true if little end first
 		@returns decoded binary data
 	*/
-	static setData( data: DataView | ArrayBufferLike, str: string, encoding: 'base16'|'base41'|'ascii'|'ucs2' = 'ucs2', littleEndian?: boolean ): DataView {
+	static setStringBuffer( data: DataView | ArrayBufferLike, value: string, encoding: 'base16' | 'base41' | 'ascii' | 'ucs2' = 'ucs2', littleEndian?: boolean ): ArrayBuffer {
+		if ( data.byteLength < this.getStringBufferByteLength( value, encoding ) ) {
+			throw new RangeError( 'insufficient destination binary data length' )
+		}
 		const dv = data instanceof DataView ? data : new DataView( data );
 		switch ( encoding ) {
 			case 'base16': { // 1 byte per 2 characters + 1 byte if trailing character
-				for ( let lfi = str.length - 1, i = 0, bi = 0; i < str.length; ++i, ++bi ) {
+				for ( let lfi = value.length - 1, i = 0, bi = 0; i < value.length; ++i, ++bi ) {
 					if ( i < lfi ) {
 						dv.setUint8(
 							bi,
-							_BASE16_DYAD_DECODE_MAP.get( str.charCodeAt( i ) )?.get( str.charCodeAt( ++i ) ) ?? 0
+							_BASE16_DYAD_DECODE_MAP.get( value.charCodeAt( i ) )?.get( value.charCodeAt( ++i ) ) ?? 0
 						);
 					}
 					else {
-						dv.setUint8( bi, _BASE16_CHAR_DECODE_MAP.get( str.charCodeAt( i ) ) ?? 0 );
+						dv.setUint8( bi, _BASE16_CHAR_DECODE_MAP.get( value.charCodeAt( i ) ) ?? 0 );
 					}
 				}
-				return dv;
+				return dv.buffer;
 			}
 			case 'base41': { // 2 bytes per 3 characters + 1 byte if trailing 1 or 2 characters
-				for ( let lfi = str.length - 2, i = 0, bi = 0; i < str.length; ++i, bi += 2 ) {
+				for ( let lfi = value.length - 2, i = 0, bi = 0; i < value.length; ++i, bi += 2 ) {
 					if ( i < lfi ) {
 						dv.setUint16(
 							bi,
-							_BASE41_TRIAD_DECODE_MAP.get( str.charCodeAt( i ) )?.get( str.charCodeAt( ++i ) )?.get( str.charCodeAt( ++i ) ) ?? 0,
+							_BASE41_TRIAD_DECODE_MAP.get( value.charCodeAt( i ) )?.get( value.charCodeAt( ++i ) )?.get( value.charCodeAt( ++i ) ) ?? 0,
 							littleEndian
 						);
 					}
 					else {
-						let c = _BASE41_CHAR_DECODE_MAP.get( str.charCodeAt( i ) ) ?? 0;
-						if ( ++i < str.length ) {
-							c = ( c * 41 ) + ( _BASE41_CHAR_DECODE_MAP.get( str.charCodeAt( i ) ) ?? 0 );
+						let c = _BASE41_CHAR_DECODE_MAP.get( value.charCodeAt( i ) ) ?? 0;
+						if ( ++i < value.length ) {
+							c = ( c * 41 ) + ( _BASE41_CHAR_DECODE_MAP.get( value.charCodeAt( i ) ) ?? 0 );
 						}
 						dv.setUint8( bi, c );
 					}
 				}
-				return dv;
+				return dv.buffer;
 			}
 			case 'ascii': { // 1 byte per 1 character
-				for ( let i = 0; i < str.length; ++i ) {
-					dv.setUint8( i, str.charCodeAt( i ) );
+				for ( let i = 0; i < value.length; ++i ) {
+					dv.setUint8( i, value.charCodeAt( i ) );
 				}
-				return dv;
+				return dv.buffer;
 			}
 			default:
 			case 'ucs2': { // 2 bytes per 1 character
-				for ( let i = 0, bi = 0; i < str.length; ++i, bi += 2 ) {
-					dv.setUint16( bi, str.charCodeAt( i ), littleEndian );
+				for ( let i = 0, bi = 0; i < value.length; ++i, bi += 2 ) {
+					dv.setUint16( bi, value.charCodeAt( i ), littleEndian );
 				}
-				return dv;
+				return dv.buffer;
 			}
 		}
 	}
 
 	/**
-		Returns decoded binary data
-		@param str encoded string
-		@param encoding 'base16', 'base41', 'ascii', or 'ucs2'
-		@param littleEndian true if little end first
-		@returns decoded binary data
+		Decodes bigint out of provided buffer
+		@param data buffer to decode
+		@returns decoded bigint
 	*/
-	static getData( str: string, encoding: 'base16'|'base41'|'ascii'|'ucs2' = 'ucs2', littleEndian?: boolean ): DataView {
-		return this.setData( new ArrayBuffer( this.getDataLength( str, encoding ) ), str, encoding, littleEndian );
+	static getBigInt( data: DataView | ArrayBufferLike ): bigint {
+		const dv = data instanceof DataView ? data : new DataView( data );
+		let value = 0n;
+		for ( let i = 0; i < dv.byteLength; ++i ) {
+			value = ( value << 8n ) + BigInt( dv.getUint8( i ) );
+		}
+		return value;
 	}
 
 	/**
-		Returns decoded buffer
-		@param str encoded string
-		@param encoding 'base16', 'base41', 'ascii', or 'ucs2'
-		@param littleEndian true if little end first
-		@returns decoded buffer
+		Returns buffer of the bigint of specified byte length
+		@param value bigint to encode
+		@param byteLength buffer byte length
+		@returns encoded buffer
 	*/
-	static getBuffer( str: string, encoding: 'base16'|'base41'|'ascii'|'ucs2' = 'ucs2', littleEndian?: boolean ): ArrayBuffer {
-		return this.setData( new ArrayBuffer( this.getDataLength( str, encoding ) ), str, encoding, littleEndian ).buffer;
+	static getBigIntBuffer( value: bigint, byteLength: number ): ArrayBuffer {
+		return this.setBigIntBuffer( new ArrayBuffer( byteLength ), value );
+	}
+
+	/**
+		Sets buffer bytes from the bigint
+		@param data destination buffer
+		@param value bigint to encode
+		@returns encoded buffer
+	*/
+	static setBigIntBuffer( data: DataView | ArrayBufferLike, value: bigint ): ArrayBuffer {
+		const dv = data instanceof DataView ? data : new DataView( data );
+		for ( let i = 0; i < dv.byteLength; ++i ) {
+			dv.setUint8( i, Number( value & 0xffn ) );
+			value = value >> 8n;
+		}
+		return dv.buffer;
 	}
 
 }

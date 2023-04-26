@@ -16,7 +16,7 @@ const _SHA256_K = [
 export class HashCode {
 
 	/**
-		Returns little-endian FNV1A 32-bit hash code
+		Returns little-endian FNV1A 32-bit hash code (not cryptographically secure)
 		@param data binary data to hash
 		@returns little-endian FNV1A 32-bit hash code
 	*/
@@ -30,7 +30,7 @@ export class HashCode {
 	}
 
 	/**
-		Returns little-endian FNV1A 64-bit hash code
+		Returns little-endian FNV1A 64-bit hash code (not cryptographically secure)
 		@param data binary data to hash
 		@returns little-endian FNV1A 64-bit hash code
 	*/
@@ -45,7 +45,7 @@ export class HashCode {
 	}
 
 	/**
-		Returns the buffer containing SHA256 256-bit hash code
+		Returns the buffer containing SHA256 256-bit hash code (not cryptographically secure)
 		@param data binary data to hash
 		@returns the buffer containing SHA256 256-bit hash code
 	*/

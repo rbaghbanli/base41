@@ -24,7 +24,7 @@ export class HashCodeTest {
 		].forEach( prm => {
 			const hash: string = prm[ 0 ];
 			const str: string = prm[ 1 ];
-			const bin = BinaryData.getBuffer( str, 'ascii' );
+			const bin = BinaryData.getStringBuffer( str, 'ascii' );
 			const hc = HashCode.getSha256HashCodeBuffer( new DataView( bin ) );
 			const v = BinaryData.getString( new DataView( hc ), 'base16' );
 			if ( v === hash ) {

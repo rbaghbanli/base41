@@ -1,8 +1,11 @@
 # ubdt
 Ubiquitous Binary Data Transformation
 
-Set of ubiquitous binary data transformation functions, including encoding, bitwise and hash functions.
+The collection of useful functions to deal with multitude of common routines with binary data, be it ArrayBuffer, DataView, or Date.
+Includes helper function for proper JSON string composing and parsing that supports most commonly used types, basic hash code and random number generators.
+All of those should have been a part of JS/TS standard library, but alas.
 
+Target: ES2020
 
 ## BinaryData
 
@@ -27,17 +30,26 @@ Returns base 41 triad string for code point
 ### getBase41TriadCodeAt
 Returns code point of base 41 triad string
 
-### getDataLength
-Returns the number of decoded bytes in string containing encoded bytes
+### getStringBufferByteLength
+Returns the number of bytes in the buffer of string of specified encoding
 
 ### getString
-Returns the string containing encoded bytes
+Returns the string of specified encoding from the buffer
 
-### getBuffer
-Returns the buffer containing decoded bytes
+### getStringBuffer
+Returns encoded buffer from the string of specified encoding
 
-### setData
-Returns the binary set with decoded bytes
+### setStringBuffer
+Sets bytes into destination buffer from the string of specified encoding
+
+### getBigInt
+Returns the bigint decoded from the buffer
+
+### getBigIntBuffer
+Returns buffer of the bigint of specified byte length
+
+### setBigIntBuffer
+Sets buffer bytes from the bigint
 
 
 ## DateTime
@@ -55,34 +67,40 @@ Returns YYYY-MM-DD HH:MM:SS date-time string
 ## HashCode
 
 ### getFnv1a32HashCode
-Returns little-endian FNV1A 32-bit hash code
+Returns little-endian FNV1A 32-bit hash code as number (not cryptographically secure)
 
 ### getFnv1a64HashCode
-Returns little-endian FNV1A 64-bit hash code
+Returns little-endian FNV1A 64-bit hash code as bigint (not cryptographically secure)
 
 ### getSha256HashCodeBuffer
-Returns buffer containing SHA256 256-bit hash code
+Returns buffer containing SHA256 256-bit hash code as ArrayBuffer (not cryptographically secure)
 
 
 ## JsonString
 
 ### getString
-Returns JSON string with bigint and date values wrapped into objects
+Returns JSON string with bigint, date, set, map, DataView and ArrayBuffer values wrapped into objects
 
 ### getObject
-Returns object with bigint and date values parsed from wrapping objects
+Returns object with bigint, date, set, map, DataView and ArrayBuffer values parsed from wrapper objects
 
 
 ## RandomNumber
 
 ### getRandomUint32
-Returns random 32-bit unsigned integer
+Returns pseudorandom 32-bit unsigned integer (not cryptographically secure)
 
 ### getRandomUint64
-Returns random 64-bit unsigned integer
+Returns pseudorandom 64-bit unsigned integer (not cryptographically secure)
 
 ### getRandomUint128
-Returns random 128-bit unsigned integer
+Returns pseudorandom 128-bit unsigned integer (not cryptographically secure)
 
 ### getRandomUint
-Returns random unsigned integer between 0 and specified value
+Returns pseudorandom unsigned integer between 0 and specified value (not cryptographically secure)
+
+### getRandomInt
+Returns pseudorandom integer between two specified values (not cryptographically secure)
+
+### getUuid
+Returns UUID version 4 / random (not cryptographically secure)

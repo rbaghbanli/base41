@@ -3,51 +3,64 @@ const _UINT32_UPPER_BOUND = 1 + ( -1 >>> 0 );
 export class RandomNumber {
 
 	/**
-		Returns random 32-bit unsigned integer
-		@returns random unsigned 32 bit integer
+		Returns pseudorandom 32-bit unsigned integer (not cryptographically secure)
+		@returns pseudorandom unsigned 32 bit integer
 	*/
 	static getRandomUint32(): number {
 		return this.getRandomUint( _UINT32_UPPER_BOUND );
 	}
 
 	/**
-		Returns random 64-bit unsigned integer
-		@returns random unsigned 64 bit integer
+		Returns pseudorandom 64-bit unsigned integer (not cryptographically secure)
+		@returns pseudorandom unsigned 64 bit integer
 	*/
 	static getRandomUint64(): bigint {
 		return ( BigInt( RandomNumber.getRandomUint32() ) << 32n ) + BigInt( RandomNumber.getRandomUint32() );
 	}
 
 	/**
-		Returns random 128-bit unsigned integer
-		@returns random unsigned 128 bit integer
+		Returns pseudorandom 128-bit unsigned integer (not cryptographically secure)
+		@returns pseudorandom unsigned 128 bit integer
 	*/
 	static getRandomUint128(): bigint {
 		return ( RandomNumber.getRandomUint64() << 64n ) + RandomNumber.getRandomUint64();
 	}
 
 	/**
-		Returns v4 UUID
-		@returns v4 UUID
+		Returns pseudorandom unsigned integer between 0 and specified value (not cryptographically secure)
+		@param exclusiveLimit upper exclusive bound of generated random number
+		@returns pseudorandom unsigned integer
 	*/
-	static getUuid(): bigint {
-		const bytes = new Uint8Array( 16 );
-		bytes.forEach( ( b, i ) => { bytes[ i ] = Math.random() * 256; } );
-		bytes[ 6 ] = ( bytes[ 6 ] & 0x0f ) | 0x40;
-		bytes[ 8 ] = ( bytes[ 8 ] & 0x3f ) | 0x80;
-
-		// TODO
-
-		return ( RandomNumber.getRandomUint64() << 64n ) + RandomNumber.getRandomUint64();
+	static getRandomUint( exclusiveLimit: number ): number {
+		return Math.floor( Math.random() * Math.abs( exclusiveLimit ) );
 	}
 
 	/**
-		Returns random unsigned integer between 0 and specified value
-		@param max upper exclusive bound of generated random number
-		@returns random unsigned integer between 0 and specified value
+		Returns pseudorandom integer between inclusive and exclusive bounds (not cryptographically secure)
+		@param inclusiveLimit lower inclusive bound of generated random number
+		@param exclusiveLimit upper exclusive bound of generated random number
+		@returns pseudorandom integer
 	*/
-	static getRandomUint( max: number ): number {
-		return Math.floor( Math.random() * max );
+	static getRandomInt( inclusiveLimit: number, exclusiveLimit: number ): number {
+		return inclusiveLimit + Math.trunc( Math.random() * ( exclusiveLimit - inclusiveLimit ) );
+	}
+
+	/**
+		Returns UUID version 4 / random (not cryptographically secure)
+		@returns UUID version 4 / random
+	*/
+	static getUuid(): bigint {
+		let uuid = 0n;
+		for ( let i = 0; i < 16; ++i ) {
+			let byte = Math.floor( Math.random() * 256 );
+			if ( i === 6 ) {
+				byte = ( byte & 0x0f ) | 0x40;
+			} else if ( i === 8 ) {
+				byte = ( byte & 0x3f ) | 0x80;
+			}
+			uuid = ( uuid << 8n ) + BigInt( byte );
+		}
+		return uuid;
 	}
 
 }

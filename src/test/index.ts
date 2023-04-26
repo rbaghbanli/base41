@@ -15,3 +15,4 @@ const test4 = new JsonStringTest();
 test4.testJsonString();
 const test5 = new RandomNumberTest();
 test5.testRandomNumber();
+test5.testUuid();

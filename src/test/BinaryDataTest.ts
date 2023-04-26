@@ -71,7 +71,7 @@ export class BinaryDataTest {
 			const enc = prm[ 1 ] as 'base16'|'base41'|'ascii'|'ucs2';
 			const lend: boolean = prm[ 2 ] as boolean;
 			const str = BinaryData.getString( new DataView( bin.buffer ), enc, lend );
-			const v = new Uint8Array( BinaryData.getBuffer( str, enc, lend ) );
+			const v = new Uint8Array( BinaryData.getStringBuffer( str, enc, lend ) );
 			if ( BinaryData.equateData( new DataView( v.buffer ), new DataView( bin.buffer ) ) ) {
 				++passed;
 			}
