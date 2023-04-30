@@ -2,7 +2,7 @@ import { DateTime } from '../DateTime';
 
 export class DateTimeTest {
 
-	testDateTimeString(): number {
+	static testDateTimeString(): number {
 		let passed = 0, failed = 0;
 		console.log( `DateTimeTest.testDateTimeString started` );
 		[

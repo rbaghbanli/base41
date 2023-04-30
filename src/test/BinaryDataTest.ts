@@ -2,7 +2,7 @@ import { BinaryData } from '../BinaryData';
 
 export class BinaryDataTest {
 
-	testRotateUint32Bits(): number {
+	static testRotateUint32Bits(): number {
 		let passed = 0, failed = 0;
 		console.log( `BinaryDataTest.testRotateUint32Bits started` );
 		[
@@ -30,7 +30,7 @@ export class BinaryDataTest {
 		return failed;
 	}
 
-	testBufferString(): number {
+	static testBufferString(): number {
 		let passed = 0, failed = 0;
 		console.log( `BinaryDataTest.testBufferString started` );
 		[

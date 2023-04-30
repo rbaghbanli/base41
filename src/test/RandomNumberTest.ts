@@ -2,7 +2,7 @@ import { RandomNumber } from '../RandomNumber';
 
 export class RandomNumberTest {
 
-	testRandomNumber(): number {
+	static testRandomNumber(): number {
 		let passed = 0, failed = 0;
 		console.log( `RandomNumberTest.testRandomNumber started` );
 		[
@@ -33,7 +33,7 @@ export class RandomNumberTest {
 		return failed;
 	}
 
-	testUuid(): number {
+	static testUuid(): number {
 		let passed = 0, failed = 0;
 		console.log( `RandomNumberTest.testUuid started` );
 		let uuid = -1n;

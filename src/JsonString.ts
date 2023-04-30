@@ -32,10 +32,10 @@ export class JsonString {
 			if ( '__json__date__' in value && typeof value.__json__date__ === 'string' ) {
 				return new Date( value.__json__date__ );
 			}
-			if ( '__json__set__' in value && typeof value.__json__set__ === 'string' ) {
+			if ( '__json__set__' in value && typeof value.__json__set__ === 'object' ) {
 				return new Set( value.__json__set__ );
 			}
-			if ( '__json__map__' in value && typeof value.__json__map__ === 'string' ) {
+			if ( '__json__map__' in value && typeof value.__json__map__ === 'object' ) {
 				return new Map( value.__json__map__ );
 			}
 			if ( '__json__dataview__' in value && typeof value.__json__dataview__ === 'string' ) {

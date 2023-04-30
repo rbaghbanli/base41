@@ -3,7 +3,7 @@ import { BinaryData } from '../BinaryData';
 
 export class HashCodeTest {
 
-	testSha256HashCode(): number {
+	static testSha256HashCode(): number {
 		let passed = 0, failed = 0;
 		console.log( `HashCodeTest.testSha256HashCode started` );
 		[
