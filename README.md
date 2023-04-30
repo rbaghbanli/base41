@@ -79,10 +79,10 @@ Returns buffer containing SHA256 256-bit hash code as ArrayBuffer (not cryptogra
 ## JsonString
 
 ### getString
-Returns JSON string with bigint, date, set, map, DataView and ArrayBuffer values wrapped into objects
+Returns JSON string with bigint, Date, Set, Map, DataView and ArrayBuffer values wrapped into objects
 
 ### getObject
-Returns object with bigint, date, set, map, DataView and ArrayBuffer values parsed from wrapper objects
+Returns object with bigint, Date, Set, Map, DataView and ArrayBuffer values parsed from wrapper objects
 
 
 ## RandomNumber
