@@ -31,16 +31,16 @@ Returns base 41 triad string for code point
 Returns code point of base 41 triad string
 
 ### getStringBufferByteLength
-Returns the number of bytes in the buffer of string of specified encoding
+Returns the number of bytes in the buffer of string of specified encoding ( 'base16' | 'base41' | 'ascii' | 'ucs2' )
 
 ### getString
-Returns the string of specified encoding from the buffer
+Returns the string of specified encoding ( 'base16' | 'base41' | 'ascii' | 'ucs2' ) from the buffer
 
 ### getStringBuffer
-Returns encoded buffer from the string of specified encoding
+Returns encoded buffer from the string of specified encoding ( 'base16' | 'base41' | 'ascii' | 'ucs2' )
 
 ### setStringBuffer
-Sets bytes into destination buffer from the string of specified encoding
+Sets bytes into destination buffer from the string of specified encoding ( 'base16' | 'base41' | 'ascii' | 'ucs2' )
 
 ### getBigInt
 Returns the bigint decoded from the buffer
