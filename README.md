@@ -91,10 +91,10 @@ Returns object with bigint, Date, Set, Map, DataView and ArrayBuffer values pars
 Returns pseudorandom 32-bit unsigned integer (not cryptographically secure)
 
 ### getRandomUint64
-Returns pseudorandom 64-bit unsigned integer (not cryptographically secure)
+Returns pseudorandom 64-bit unsigned integer (not cryptographically secure) as bigint
 
 ### getRandomUint128
-Returns pseudorandom 128-bit unsigned integer (not cryptographically secure)
+Returns pseudorandom 128-bit unsigned integer (not cryptographically secure) as bigint
 
 ### getRandomUint
 Returns pseudorandom unsigned integer between 0 and specified value (not cryptographically secure)
@@ -103,4 +103,4 @@ Returns pseudorandom unsigned integer between 0 and specified value (not cryptog
 Returns pseudorandom integer between two specified values (not cryptographically secure)
 
 ### getUuid
-Returns UUID version 4 / random (not cryptographically secure)
+Returns UUID version 4 / random (not cryptographically secure) as bigint
