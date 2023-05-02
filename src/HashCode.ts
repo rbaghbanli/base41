@@ -1,4 +1,4 @@
-import { BinaryData } from './BinaryData';
+import * as BinaryData from './BinaryData';
 
 const _FNV32_PRIME = 16777619;
 const _FNV64_PRIME = new Uint32Array( [ 0x000001B3, 0x100 ] );
@@ -13,104 +13,100 @@ const _SHA256_K = [
 	0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
 ];
 
-export class HashCode {
-
-	/**
-		Returns little-endian FNV1A 32-bit hash code (not cryptographically secure)
-		@param data binary data to hash
-		@returns little-endian FNV1A 32-bit hash code
-	*/
-	static getFnv1a32HashCode( data: DataView ): number {
-		let hc = 2166136261;
-		for ( let i = 0; i < data.byteLength; ++i ) {
-			hc = ( hc ^ data.getUint8( i ) ) >>> 0;
-			hc = Math.imul( hc, _FNV32_PRIME ) >>> 0;
-		}
-		return hc;
+/**
+	Returns little-endian FNV1A 32-bit hash code (not cryptographically secure)
+	@param data binary data to hash
+	@returns little-endian FNV1A 32-bit hash code
+*/
+export function getFnv1a32HashCode( data: DataView ): number {
+	let hc = 2166136261;
+	for ( let i = 0; i < data.byteLength; ++i ) {
+		hc = ( hc ^ data.getUint8( i ) ) >>> 0;
+		hc = Math.imul( hc, _FNV32_PRIME ) >>> 0;
 	}
+	return hc;
+}
 
-	/**
-		Returns little-endian FNV1A 64-bit hash code (not cryptographically secure)
-		@param data binary data to hash
-		@returns little-endian FNV1A 64-bit hash code
-	*/
-	static getFnv1a64HashCode( data: DataView ): bigint {
-		const hc = new Uint32Array( [ 0x84222325, 0xcbf29ce4 ] ); // little-endian offset basis
-		for ( let i = 0; i < data.byteLength; ++i ) {
-			hc[ 0 ] = ( hc[ 0 ] ^ data.getUint8( i ) ) >>> 0;
-			hc[ 0 ] = Math.imul( hc[ 0 ], _FNV64_PRIME[ 0 ] ) >>> 0;
-			hc[ 1 ] = ( Math.imul( hc[ 0 ], _FNV64_PRIME[ 1 ] ) + Math.imul( hc[ 1 ], _FNV64_PRIME[ 0 ] ) ) >>> 0;
-		}
-		return ( BigInt( hc[ 0 ] ) << 64n ) + BigInt( hc[ 1 ] );
+/**
+	Returns little-endian FNV1A 64-bit hash code (not cryptographically secure)
+	@param data binary data to hash
+	@returns little-endian FNV1A 64-bit hash code
+*/
+export function getFnv1a64HashCode( data: DataView ): bigint {
+	const hc = new Uint32Array( [ 0x84222325, 0xcbf29ce4 ] ); // little-endian offset basis
+	for ( let i = 0; i < data.byteLength; ++i ) {
+		hc[ 0 ] = ( hc[ 0 ] ^ data.getUint8( i ) ) >>> 0;
+		hc[ 0 ] = Math.imul( hc[ 0 ], _FNV64_PRIME[ 0 ] ) >>> 0;
+		hc[ 1 ] = ( Math.imul( hc[ 0 ], _FNV64_PRIME[ 1 ] ) + Math.imul( hc[ 1 ], _FNV64_PRIME[ 0 ] ) ) >>> 0;
 	}
+	return ( BigInt( hc[ 0 ] ) << 64n ) + BigInt( hc[ 1 ] );
+}
 
-	/**
-		Returns the buffer containing SHA256 256-bit hash code (not cryptographically secure)
-		@param data binary data to hash
-		@returns the buffer containing SHA256 256-bit hash code
-	*/
-	static getSha256HashCodeBuffer( data: DataView ): ArrayBuffer {
-		const bc = Math.ceil( ( data.byteLength + 1 + 8 ) / 64 );	// block count
-		const lbi = bc - 1;	// last block index
-		const h = [ 0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19 ];
-		const v = new Array<number>( 8 );	// a, b, c, d, e, f, g, h
-		const w = new Array<number>( 64 );
-		for ( let bi = 0; bi < bc; ++bi ) {	// block index
-			let wc = 16;	// word count
-			if ( bi === lbi ) {	// if last block short iteration as last 2 words are data bit length
-				wc = 14;
-				w[ 14 ] = Math.floor( data.byteLength / 536870912 );	// higher word of data bit length = data byte length * 8 / 2**32
-				w[ 15 ] = ( data.byteLength << 3 ) >>> 0; // lower word of data bit length
-			}
-			for ( let wi = 0; wi < wc; ++wi ) {	// word index to load data into worksheet
-				w[ wi ] = 0;
-				for ( let oi = 0; oi < 4; ++oi ) {	// octet index
-					const doi = ( bi * 64 ) + ( wi << 2 ) + oi;	// data octet index = block index * block length + word index * word length + octet index
-					const octet = doi < data.byteLength ? data.getUint8( doi ) : ( doi === data.byteLength ? 0x80 : 0 );
-					w[ wi ] |= octet << ( ( 3 - oi ) << 3 );
-				}
-			}
-			for ( let wi = 16; wi < 64; ++wi ) {	// word index to extend data in worksheet
-				const s15 = w[ wi - 15 ];
-				const s2 = w[ wi - 2 ];
-				const s0 = ( BinaryData.rotateUint32BitsRight( s15, 7 ) ^ BinaryData.rotateUint32BitsRight( s15, 18 ) ^ ( s15 >>> 3 ) ) >>> 0;
-				const s1 = ( BinaryData.rotateUint32BitsRight( s2, 17 ) ^ BinaryData.rotateUint32BitsRight( s2, 19 ) ^ ( s2 >>> 10 ) ) >>> 0;
-				w[ wi ] = ( w[ wi - 16 ] + s0 + w[ wi - 7 ] + s1 ) >>> 0;
-			}
-			for ( let i = 0; i < 8; ++i ) {
-				v[ i ] = h[ i ];
-			}
-			for ( let wi = 0; wi < 64; ++wi ) {	// word index to perform compression loop
-				const s1 = ( BinaryData.rotateUint32BitsRight( v[ 4 ] /* e */, 6 ) ^
-					BinaryData.rotateUint32BitsRight( v[ 4 ] /* e */, 11 ) ^
-					BinaryData.rotateUint32BitsRight( v[ 4 ] /* e */, 25 ) ) >>> 0;
-				const ch = ( ( v[ 4 ] /* e */ & v[ 5 ] /* f */ ) ^ ( ( ~v[ 4 ] /* e */ ) & v[ 6 ] /* g */ ) ) >>> 0;
-				const t1 = ( v[ 7 ] /* h */ + s1 + ch + _SHA256_K[ wi ] + w[ wi ] ) >>> 0;
-				const s0 = ( BinaryData.rotateUint32BitsRight( v[ 0 ] /* a */, 2 ) ^
-					BinaryData.rotateUint32BitsRight( v[ 0 ] /* a */, 13 ) ^
-					BinaryData.rotateUint32BitsRight( v[ 0 ] /* a */, 22 ) ) >>> 0;
-				const maj = ( ( v[ 0 ] /* a */ & v[ 1 ] /* b */ ) ^ ( v[ 0 ] /* a */ & v[ 2 ] /* c */ ) ^ ( v[ 1 ] /* b */ & v[ 2 ] /* c */ ) ) >>> 0;
-				const t2 = ( s0 + maj ) >>> 0;
-				v[ 7 ] /* h */ = v[ 6 ]; /* g */
-				v[ 6 ] /* g */ = v[ 5 ]; /* f */
-				v[ 5 ] /* f */ = v[ 4 ]; /* e */
-				v[ 4 ] /* e */ = ( v[ 3 ] /* d */ + t1 ) >>> 0;
-				v[ 3 ] /* d */ = v[ 2 ]; /* c */
-				v[ 2 ] /* c */ = v[ 1 ]; /* b */
-				v[ 1 ] /* b */ = v[ 0 ]; /* a */
-				v[ 0 ] /* a */ = ( t1 + t2 ) >>> 0;
-			}
-			for ( let i = 0; i < 8; ++i ) {
-				h[ i ] = ( h[ i ] + v[ i ] ) >>> 0;
-			}
+/**
+	Returns the buffer containing SHA256 256-bit hash code (not cryptographically secure)
+	@param data binary data to hash
+	@returns the buffer containing SHA256 256-bit hash code
+*/
+export function getSha256HashCodeBuffer( data: DataView ): ArrayBuffer {
+	const bc = Math.ceil( ( data.byteLength + 1 + 8 ) / 64 );	// block count
+	const lbi = bc - 1;	// last block index
+	const h = [ 0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19 ];
+	const v = new Array<number>( 8 );	// a, b, c, d, e, f, g, h
+	const w = new Array<number>( 64 );
+	for ( let bi = 0; bi < bc; ++bi ) {	// block index
+		let wc = 16;	// word count
+		if ( bi === lbi ) {	// if last block short iteration as last 2 words are data bit length
+			wc = 14;
+			w[ 14 ] = Math.floor( data.byteLength / 536870912 );	// higher word of data bit length = data byte length * 8 / 2**32
+			w[ 15 ] = ( data.byteLength << 3 ) >>> 0; // lower word of data bit length
 		}
-		const hc = new Uint8Array( 32 );
-		for ( let i = 0; i < 8; ++i ) {
+		for ( let wi = 0; wi < wc; ++wi ) {	// word index to load data into worksheet
+			w[ wi ] = 0;
 			for ( let oi = 0; oi < 4; ++oi ) {	// octet index
-				hc[ ( i << 2 ) + oi ] = h[ i ] >>> ( ( 3 - oi ) << 3 );
+				const doi = ( bi * 64 ) + ( wi << 2 ) + oi;	// data octet index = block index * block length + word index * word length + octet index
+				const octet = doi < data.byteLength ? data.getUint8( doi ) : ( doi === data.byteLength ? 0x80 : 0 );
+				w[ wi ] |= octet << ( ( 3 - oi ) << 3 );
 			}
 		}
-		return hc.buffer;
+		for ( let wi = 16; wi < 64; ++wi ) {	// word index to extend data in worksheet
+			const s15 = w[ wi - 15 ];
+			const s2 = w[ wi - 2 ];
+			const s0 = ( BinaryData.rotateUint32BitsRight( s15, 7 ) ^ BinaryData.rotateUint32BitsRight( s15, 18 ) ^ ( s15 >>> 3 ) ) >>> 0;
+			const s1 = ( BinaryData.rotateUint32BitsRight( s2, 17 ) ^ BinaryData.rotateUint32BitsRight( s2, 19 ) ^ ( s2 >>> 10 ) ) >>> 0;
+			w[ wi ] = ( w[ wi - 16 ] + s0 + w[ wi - 7 ] + s1 ) >>> 0;
+		}
+		for ( let i = 0; i < 8; ++i ) {
+			v[ i ] = h[ i ];
+		}
+		for ( let wi = 0; wi < 64; ++wi ) {	// word index to perform compression loop
+			const s1 = ( BinaryData.rotateUint32BitsRight( v[ 4 ] /* e */, 6 ) ^
+				BinaryData.rotateUint32BitsRight( v[ 4 ] /* e */, 11 ) ^
+				BinaryData.rotateUint32BitsRight( v[ 4 ] /* e */, 25 ) ) >>> 0;
+			const ch = ( ( v[ 4 ] /* e */ & v[ 5 ] /* f */ ) ^ ( ( ~v[ 4 ] /* e */ ) & v[ 6 ] /* g */ ) ) >>> 0;
+			const t1 = ( v[ 7 ] /* h */ + s1 + ch + _SHA256_K[ wi ] + w[ wi ] ) >>> 0;
+			const s0 = ( BinaryData.rotateUint32BitsRight( v[ 0 ] /* a */, 2 ) ^
+				BinaryData.rotateUint32BitsRight( v[ 0 ] /* a */, 13 ) ^
+				BinaryData.rotateUint32BitsRight( v[ 0 ] /* a */, 22 ) ) >>> 0;
+			const maj = ( ( v[ 0 ] /* a */ & v[ 1 ] /* b */ ) ^ ( v[ 0 ] /* a */ & v[ 2 ] /* c */ ) ^ ( v[ 1 ] /* b */ & v[ 2 ] /* c */ ) ) >>> 0;
+			const t2 = ( s0 + maj ) >>> 0;
+			v[ 7 ] /* h */ = v[ 6 ]; /* g */
+			v[ 6 ] /* g */ = v[ 5 ]; /* f */
+			v[ 5 ] /* f */ = v[ 4 ]; /* e */
+			v[ 4 ] /* e */ = ( v[ 3 ] /* d */ + t1 ) >>> 0;
+			v[ 3 ] /* d */ = v[ 2 ]; /* c */
+			v[ 2 ] /* c */ = v[ 1 ]; /* b */
+			v[ 1 ] /* b */ = v[ 0 ]; /* a */
+			v[ 0 ] /* a */ = ( t1 + t2 ) >>> 0;
+		}
+		for ( let i = 0; i < 8; ++i ) {
+			h[ i ] = ( h[ i ] + v[ i ] ) >>> 0;
+		}
 	}
-
+	const hc = new Uint8Array( 32 );
+	for ( let i = 0; i < 8; ++i ) {
+		for ( let oi = 0; oi < 4; ++oi ) {	// octet index
+			hc[ ( i << 2 ) + oi ] = h[ i ] >>> ( ( 3 - oi ) << 3 );
+		}
+	}
+	return hc.buffer;
 }

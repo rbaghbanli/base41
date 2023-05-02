@@ -1,8 +1,8 @@
-import { DateTimeTest } from './DateTimeTest';
-import { BinaryDataTest } from './BinaryDataTest';
-import { HashCodeTest } from './HashCodeTest';
-import { JsonStringTest } from './JsonStringTest';
-import { RandomNumberTest } from './RandomNumberTest';
+import * as DateTimeTest from './DateTimeTest';
+import * as BinaryDataTest from './BinaryDataTest';
+import * as HashCodeTest from './HashCodeTest';
+import * as JsonStringTest from './JsonStringTest';
+import * as RandomNumberTest from './RandomNumberTest';
 
 DateTimeTest.testDateTimeString();
 BinaryDataTest.testRotateUint32Bits();

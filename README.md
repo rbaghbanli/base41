@@ -103,4 +103,4 @@ Returns pseudorandom unsigned integer between 0 and specified value (not cryptog
 Returns pseudorandom integer between two specified values (not cryptographically secure)
 
 ### getUuid
-Returns UUID version 4 / random (not cryptographically secure) as bigint
+Returns UUID version 4 / random as bigint
