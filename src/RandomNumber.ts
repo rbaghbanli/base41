@@ -1,6 +1,25 @@
 const _UINT32_UPPER_BOUND = 1 + ( -1 >>> 0 );
 
 /**
+	Returns pseudorandom unsigned integer between 0 and specified value (not cryptographically secure)
+	@param exclusiveLimit upper exclusive bound of generated random number
+	@returns pseudorandom unsigned integer
+*/
+export function getRandomUint( exclusiveLimit: number ): number {
+	return Math.floor( Math.random() * Math.abs( exclusiveLimit ) );
+}
+
+/**
+	Returns pseudorandom integer between inclusive and exclusive bounds (not cryptographically secure)
+	@param inclusiveLimit lower inclusive bound of generated random number
+	@param exclusiveLimit upper exclusive bound of generated random number
+	@returns pseudorandom integer
+*/
+export function getRandomInt( inclusiveLimit: number, exclusiveLimit: number ): number {
+	return inclusiveLimit + Math.trunc( Math.random() * ( exclusiveLimit - inclusiveLimit ) );
+}
+
+/**
 	Returns pseudorandom 32-bit unsigned integer (not cryptographically secure)
 	@returns pseudorandom unsigned 32 bit integer
 */
@@ -22,25 +41,6 @@ export function getRandomUint64(): bigint {
 */
 export function getRandomUint128(): bigint {
 	return ( getRandomUint64() << 64n ) + getRandomUint64();
-}
-
-/**
-	Returns pseudorandom unsigned integer between 0 and specified value (not cryptographically secure)
-	@param exclusiveLimit upper exclusive bound of generated random number
-	@returns pseudorandom unsigned integer
-*/
-export function getRandomUint( exclusiveLimit: number ): number {
-	return Math.floor( Math.random() * Math.abs( exclusiveLimit ) );
-}
-
-/**
-	Returns pseudorandom integer between inclusive and exclusive bounds (not cryptographically secure)
-	@param inclusiveLimit lower inclusive bound of generated random number
-	@param exclusiveLimit upper exclusive bound of generated random number
-	@returns pseudorandom integer
-*/
-export function getRandomInt( inclusiveLimit: number, exclusiveLimit: number ): number {
-	return inclusiveLimit + Math.trunc( Math.random() * ( exclusiveLimit - inclusiveLimit ) );
 }
 
 /**

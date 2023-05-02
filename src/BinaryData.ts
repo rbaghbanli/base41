@@ -200,18 +200,6 @@ export function getString( data: DataView | ArrayBufferLike,
 }
 
 /**
-	Returns buffer of the string of specified encoding
-	@param value string to encode
-	@param encoding 'base16', 'base41', 'ascii', or 'ucs2'
-	@param littleEndian true if little end first
-	@returns encoded buffer
-*/
-export function getStringBuffer( value: string,
-	encoding: 'base16' | 'base41' | 'ascii' | 'ucs2' = 'ucs2', littleEndian?: boolean ): ArrayBuffer {
-	return setStringBuffer( new ArrayBuffer( getStringBufferByteLength( value, encoding ) ), value, encoding, littleEndian );
-}
-
-/**
 	Sets buffer bytes from the string of specified encoding
 	@param data sufficiently long destination buffer
 	@param value string to encode
@@ -276,6 +264,18 @@ export function setStringBuffer( data: DataView | ArrayBufferLike, value: string
 }
 
 /**
+	Returns buffer of the string of specified encoding
+	@param value string to encode
+	@param encoding 'base16', 'base41', 'ascii', or 'ucs2'
+	@param littleEndian true if little end first
+	@returns encoded buffer
+*/
+export function getStringBuffer( value: string,
+	encoding: 'base16' | 'base41' | 'ascii' | 'ucs2' = 'ucs2', littleEndian?: boolean ): ArrayBuffer {
+	return setStringBuffer( new ArrayBuffer( getStringBufferByteLength( value, encoding ) ), value, encoding, littleEndian );
+}
+
+/**
 	Decodes bigint out of provided buffer
 	@param data buffer to decode
 	@returns decoded bigint
@@ -287,16 +287,6 @@ export function getBigInt( data: DataView | ArrayBufferLike ): bigint {
 		v = ( v << 8n ) + BigInt( dv.getUint8( i ) );
 	}
 	return v;
-}
-
-/**
-	Returns buffer of the bigint of specified byte length
-	@param value bigint to encode
-	@param byteLength buffer byte length
-	@returns encoded buffer
-*/
-export function getBigIntBuffer( value: bigint, byteLength: number ): ArrayBuffer {
-	return setBigIntBuffer( new ArrayBuffer( byteLength ), value );
 }
 
 /**
@@ -313,4 +303,14 @@ export function setBigIntBuffer( data: DataView | ArrayBufferLike, value: bigint
 		v >>= 8n;
 	}
 	return dv.buffer;
+}
+
+/**
+	Returns buffer of the bigint of specified byte length
+	@param value bigint to encode
+	@param byteLength buffer byte length
+	@returns encoded buffer
+*/
+export function getBigIntBuffer( value: bigint, byteLength: number ): ArrayBuffer {
+	return setBigIntBuffer( new ArrayBuffer( byteLength ), value );
 }

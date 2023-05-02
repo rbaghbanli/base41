@@ -1,5 +1,13 @@
 import * as BinaryData from './BinaryData';
 
+/**
+	Replaces bigint, date, set, map, DataView and ArrayBuffer values with wrapping objects
+	@this {object}
+	@param this object being stringified
+	@param key string
+	@param value any
+	@returns JSON string
+*/
 function _replace( this: any, key: string, value: any ): any {
 	if ( typeof value === 'bigint' ) {
 		return { __json__bigint__: value.toString() };
@@ -22,6 +30,12 @@ function _replace( this: any, key: string, value: any ): any {
 	return value;
 }
 
+/**
+	Revives bigint, date, set, map, DataView and ArrayBuffer values from wrapping objects
+	@param key string
+	@param value any
+	@returns parsed value
+*/
 function _revive( key: string, value: any ): any {
 	if ( value != null && typeof value === 'object' ) {
 		if ( '__json__bigint__' in value && typeof value.__json__bigint__ === 'string' ) {
