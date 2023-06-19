@@ -1,19 +1,12 @@
 # ubdt
 Ubiquitous Binary Data Transformation
 
-The collection of useful functions to deal with multitude of common routines with binary data, be it ArrayBuffer, DataView, or Date.
-Includes helper function for proper JSON string composing and parsing that supports most commonly used types, basic hash code and random number generators.
-All of those should have been a part of JS/TS standard library, but alas.
+The collection of useful functions to deal with multitude of common routines with binary data, be it number, ArrayBuffer, DataView, or Date.
+Includes helper function for extended JSON string composing and parsing that supports most commonly used types.
 
 Target: ES2020
 
-## BinaryData
-
-### rotateUint32BitsLeft
-Returns the result of bit rotation of 32-bit unsigned integer to left
-
-### rotateUint32BitsRight
-Returns the result of bit rotation of 32-bit unsigned integer to right
+## BufferExt
 
 ### equateData
 Returns true if two byte sequences contain the same bytes, false otherwise
@@ -30,77 +23,86 @@ Returns base 41 triad string for code point
 ### getBase41TriadCodeAt
 Returns code point of base 41 triad string
 
-### getStringBufferByteLength
+### getEncodedByteLength
 Returns the number of bytes in the buffer of string of specified encoding ( 'base16' | 'base41' | 'ascii' | 'ucs2' )
 
-### getString
+### toString
 Returns the string of specified encoding ( 'base16' | 'base41' | 'ascii' | 'ucs2' ) from the buffer
 
-### getStringBuffer
+### fromString
 Returns encoded buffer from the string of specified encoding ( 'base16' | 'base41' | 'ascii' | 'ucs2' )
 
-### setStringBuffer
+### setString
 Sets bytes into destination buffer from the string of specified encoding ( 'base16' | 'base41' | 'ascii' | 'ucs2' )
 
-### getBigInt
+### toBigInt
 Returns the bigint decoded from the buffer
 
-### getBigIntBuffer
+### fromBigInt
 Returns buffer of the bigint of specified byte length
 
-### setBigIntBuffer
+### setBigInt
 Sets buffer bytes from the bigint
 
+### toFnv1a32HashCode
+Returns FNV1A 32-bit hash code as number (not cryptographically secure)
 
-## DateTime
+### toFnv1a64HashCode
+Returns FNV1A 64-bit hash code as bigint (not cryptographically secure)
 
-### getDateString / getUtcDateString
+### toSha256HashCode
+Returns SHA256 256-bit hash code as bigint (not cryptographically secure)
+
+### toSha256HashCodeBuffer
+Returns SHA256 256-bit hash code as ArrayBuffer (not cryptographically secure)
+
+
+## DateExt
+
+### toDateString / toUtcDateString
 Returns YYYY-MM-DD date string
 
-### getTimeString / getUtcTimeString
-Returns HH:MM:SS time string
+### toTimeString / toUtcTimeString
+Returns HH:MM:SS(.UUU) time string
 
-### getDateTimeString / getUtcDateTimeString
-Returns YYYY-MM-DD HH:MM:SS date-time string
-
-
-## HashCode
-
-### getFnv1a32HashCode
-Returns little-endian FNV1A 32-bit hash code as number (not cryptographically secure)
-
-### getFnv1a64HashCode
-Returns little-endian FNV1A 64-bit hash code as bigint (not cryptographically secure)
-
-### getSha256HashCodeBuffer
-Returns buffer containing SHA256 256-bit hash code as ArrayBuffer (not cryptographically secure)
+### toDateTimeString / toUtcDateTimeString
+Returns YYYY-MM-DD HH:MM:SS(.UUU) date-time string
 
 
-## JsonString
+## IntegerExt
 
-### getString
-Returns JSON string with bigint, Date, Set, Map, DataView and ArrayBuffer values wrapped into objects
+### rotateUint32BitsLeft
+Returns the result of bit rotation of 32-bit unsigned integer to left
 
-### getObject
-Returns object with bigint, Date, Set, Map, DataView and ArrayBuffer values parsed from wrapper objects
+### rotateUint32BitsRight
+Returns the result of bit rotation of 32-bit unsigned integer to right
 
+### reverseUint32Bytes
+Returns the result of byte reversal of 32-bit unsigned integer
 
-## RandomNumber
-
-### getRandomUint32
+### randomizeUint32
 Returns pseudorandom 32-bit unsigned integer (not cryptographically secure)
 
-### getRandomUint64
+### randomizeUint64
 Returns pseudorandom 64-bit unsigned integer (not cryptographically secure) as bigint
 
-### getRandomUint128
+### randomizeUint128
 Returns pseudorandom 128-bit unsigned integer (not cryptographically secure) as bigint
 
-### getRandomUint
+### randomizeUint
 Returns pseudorandom unsigned integer between 0 and specified value (not cryptographically secure)
 
-### getRandomInt
+### randomizeInt
 Returns pseudorandom integer between two specified values (not cryptographically secure)
 
-### getUuid
+### generateUuid
 Returns UUID version 4 / random as bigint
+
+
+## JsonExt
+
+### toString
+Returns JSON string with bigint, Date, Set, Map, DataView and ArrayBuffer values wrapped into objects
+
+### fromString
+Returns value with bigint, Date, Set, Map, DataView and ArrayBuffer values parsed from wrapper objects

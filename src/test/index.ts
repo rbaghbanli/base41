@@ -1,14 +1,14 @@
-import * as DateTimeTest from './DateTimeTest';
-import * as BinaryDataTest from './BinaryDataTest';
-import * as HashCodeTest from './HashCodeTest';
-import * as JsonStringTest from './JsonStringTest';
-import * as RandomNumberTest from './RandomNumberTest';
+import * as BufferExtTest from './BufferExtTest';
+import * as DateExtTest from './DateExtTest';
+import * as IntegerExtTest from './IntegerExtTest';
+import * as JsonExtTest from './JsonExtTest';
 
-DateTimeTest.testDateTimeString();
-BinaryDataTest.testRotateUint32Bits();
-BinaryDataTest.testBufferString();
-HashCodeTest.testSha256HashCode();
-JsonStringTest.testJsonString();
-JsonStringTest.testJsonValues();
-RandomNumberTest.testRandomNumber();
-RandomNumberTest.testUuid();
+BufferExtTest.testBufferString();
+BufferExtTest.testSha256HashCode();
+DateExtTest.testDateTimeString();
+IntegerExtTest.testRotateUint32Bits();
+IntegerExtTest.testReverseUint32Bytes();
+IntegerExtTest.testRandomNumber();
+IntegerExtTest.testUuid();
+JsonExtTest.testJsonString();
+JsonExtTest.testJsonValues();

@@ -1,8 +1,8 @@
-import * as JsonString from '../JsonString';
+import * as JsonExt from '../JsonExt';
 
 export function testJsonString(): number {
 	let passed = 0, failed = 0;
-	console.log( `JsonStringTest.testJsonString started` );
+	console.log( `testJsonString started...` );
 	[
 		[ { date: new Date() } ],
 		[ { inner: { date_: new Date() } } ],
@@ -15,8 +15,8 @@ export function testJsonString(): number {
 		[ { tset: new Set( [ 'a', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'c', 'c', 'c', 'c', 'c' ] ), tset0: new Set() } ],
 		[ { inner: { tmap: new Map( [ [ 123n, 'abc ' ], [ 456n, 'def' ], [ 456n, 'def' ], [ 456n, 'def' ], [ 456n, 'def' ] ] ), tmap0: new Map() } } ],
 	].forEach( prm => {
-		const str: string = JsonString.getString( prm[ 0 ] );
-		const v: string = JsonString.getString( JsonString.getObject( str ) );
+		const str: string = JsonExt.toString( prm[ 0 ] );
+		const v: string = JsonExt.toString( JsonExt.fromString( str ) );
 		if ( str === v ) {
 			++passed;
 		}
@@ -25,13 +25,13 @@ export function testJsonString(): number {
 			++failed;
 		}
 	} );
-	console.log( `JsonStringTest.testJsonString stopped: passed ${ passed } failed ${ failed }` );
+	console.log( `result: passed ${ passed } failed ${ failed }` );
 	return failed;
 }
 
 export function testJsonValues(): number {
 	let passed = 0, failed = 0;
-	console.log( `JsonStringTest.testJsonValues started` );
+	console.log( `testJsonValues started...` );
 	const tobj = {
 		number_: 123,
 		string_: 'abc',
@@ -44,8 +44,8 @@ export function testJsonValues(): number {
 		map0: new Map(),
 		map1: new Map<number, Set<number>>( [ [ 1, new Set<number>( [ 1 ] ) ], [ 2, new Set<number>( [ 2 ] ) ] ] )
 	};
-	const str = JsonString.getString( tobj );
-	const robj = JsonString.getObject( str );
+	const str = JsonExt.toString( tobj );
+	const robj = JsonExt.fromString( str );
 	if ( tobj.number_ === robj.number_ ) {
 		++passed;
 	}
@@ -116,6 +116,6 @@ export function testJsonValues(): number {
 		console.error( `test failed on ${ robj.map1 } expected ${ tobj.map1 }` );
 		++failed;
 	}
-	console.log( `JsonStringTest.testJsonValues stopped: passed ${ passed } failed ${ failed }` );
+	console.log( `result: passed ${ passed } failed ${ failed }` );
 	return failed;
 }
