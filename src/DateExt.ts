@@ -65,3 +65,35 @@ export function toDateTimeString( date: Date, appendMilliseconds?: boolean ): st
 export function toUtcDateTimeString( date: Date, appendMilliseconds?: boolean ): string {
 	return `${ toUtcDateString( date ) } ${ toUtcTimeString( date, appendMilliseconds ) }`;
 }
+
+/**
+	Returns Date from YYYY-MM-DD[ HH:MM[:SS[.UUU]]] formatted date-time string.
+	@param value Date-time string in YYYY-MM-DD[ HH:MM[:SS[.UUU]]] format.
+	@returns Parsed Date, throw RangeError if invalid parameter format.
+*/
+export function fromDateTimeString( value: string ): Date {
+	return new Date( value );
+}
+
+/**
+	Returns Date from YYYY-MM-DD[ HH:MM[:SS[.UUU]]] formatted UTC date-time string.
+	@param value Date-time string in YYYY-MM-DD[ HH:MM[:SS[.UUU]]] format.
+	@returns Parsed Date, throw RangeError if invalid parameter format.
+*/
+export function fromUtcDateTimeString( value: string ): Date {
+	switch ( value.length ) {
+		case 10:
+			return new Date( value + ' 00:00:00.000Z' );
+		case 16:
+			return new Date( value + ':00.000Z' );
+		case 19:
+			return new Date( value + '.000Z' );
+		default:
+			if ( value.length > 22 ) {
+				return new Date( value.substring( 0, 23 ) + 'Z' );
+			}
+			else {
+				throw new Error( `invalid parameter '${ value }'` );
+			}
+	}
+}
