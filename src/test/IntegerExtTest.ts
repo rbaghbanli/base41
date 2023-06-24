@@ -55,7 +55,7 @@ export function testReverseUint32Bytes(): number {
 	return failed;
 }
 
-export function testRandomNumber(): number {
+export function testRandomizeNumber(): number {
 	let passed = 0, failed = 0;
 	console.log( `testRandomNumber started...` );
 	[
@@ -86,9 +86,9 @@ export function testRandomNumber(): number {
 	return failed;
 }
 
-export function testUuid(): number {
+export function testGenerateUuid(): number {
 	let passed = 0, failed = 0;
-	console.log( `testUuid started...` );
+	console.log( `testGenerateUuid started...` );
 	let uuid = -1n;
 	for ( let i = 0; i < 16; ++i ) {
 		const uuid_ = IntegerExt.generateUuid();

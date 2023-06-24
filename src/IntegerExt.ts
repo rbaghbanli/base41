@@ -74,9 +74,10 @@ export function randomizeUint128(): bigint {
 
 /**
 	Returns UUID version 4 / random.
+	@param version UUID version, '4'.
 	@returns UUID version 4 / random.
 */
-export function generateUuid( version: 4 = 4 ): bigint {
+export function generateUuid( version: '4' = '4' ): bigint {
 	let uuid = 0n;
 	for ( let i = 0; i < 16; ++i ) {
 		let byte = Math.floor( Math.random() * 256 );

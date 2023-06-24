@@ -1,99 +1,85 @@
 /**
-	Returns YYYY-MM-DD date string.
-	@param date Date.
-	@returns YYYY-MM-DD date string.
+	Returns formatted date or date-time string.
+	@param date Date to stringify.
+	@param format 'YYYY-MM-DD', 'HH:MM', 'HH:MM:SS', 'HH:MM:SS.UUU', 'YYYY-MM-DD HH:MM:SS', 'YYYY-MM-DD HH:MM:SS.UUU'.
+	@param utc True for UTC, false for local.
+	@returns Formatted date or date-time string.
 */
-export function toDateString( date: Date ): string {
-	return `${ date.getFullYear().toString() }` +
-		`-${ ( date.getMonth() + 1 ).toString().padStart( 2, '0' ) }` +
-		`-${ date.getDate().toString().padStart( 2, '0' ) }`;
+export function toString( date: Date,
+	format: 'YYYY-MM-DD' | 'HH:MM' | 'HH:MM:SS' | 'HH:MM:SS.UUU' | 'YYYY-MM-DD HH:MM:SS' | 'YYYY-MM-DD HH:MM:SS.UUU', utc?: boolean ): string {
+	if ( utc ) {
+		switch ( format ) {
+			case 'YYYY-MM-DD':
+				return `${ date.getUTCFullYear().toString() }` +
+					`-${ ( date.getUTCMonth() + 1 ).toString().padStart( 2, '0' ) }` +
+					`-${ date.getUTCDate().toString().padStart( 2, '0' ) }`;
+			case 'HH:MM':
+				return `${ date.getUTCHours().toString().padStart( 2, '0' ) }` +
+					`:${ date.getUTCMinutes().toString().padStart( 2, '0' ) }`;
+			case 'HH:MM:SS':
+				return `${ date.getUTCHours().toString().padStart( 2, '0' ) }` +
+					`:${ date.getUTCMinutes().toString().padStart( 2, '0' ) }` +
+					`:${ date.getUTCSeconds().toString().padStart( 2, '0' ) }`;
+			case 'HH:MM:SS.UUU':
+				return `${ date.getUTCHours().toString().padStart( 2, '0' ) }` +
+					`:${ date.getUTCMinutes().toString().padStart( 2, '0' ) }` +
+					`:${ date.getUTCSeconds().toString().padStart( 2, '0' ) }` +
+					`.${ date.getUTCMilliseconds().toString().padStart( 3, '0' ) }`;
+			case 'YYYY-MM-DD HH:MM:SS':
+				return `${ toString( date, 'YYYY-MM-DD', utc ) } ${ toString( date, 'HH:MM:SS', utc ) }`;
+			default:
+				return `${ toString( date, 'YYYY-MM-DD', utc ) } ${ toString( date, 'HH:MM:SS.UUU', utc ) }`;
+		}
+	}
+	else {
+		switch ( format ) {
+			case 'YYYY-MM-DD':
+				return `${ date.getFullYear().toString() }` +
+					`-${ ( date.getMonth() + 1 ).toString().padStart( 2, '0' ) }` +
+					`-${ date.getDate().toString().padStart( 2, '0' ) }`;
+			case 'HH:MM':
+				return `${ date.getHours().toString().padStart( 2, '0' ) }` +
+					`:${ date.getMinutes().toString().padStart( 2, '0' ) }`;
+			case 'HH:MM:SS':
+				return `${ date.getHours().toString().padStart( 2, '0' ) }` +
+					`:${ date.getMinutes().toString().padStart( 2, '0' ) }` +
+					`:${ date.getSeconds().toString().padStart( 2, '0' ) }`;
+			case 'HH:MM:SS.UUU':
+				return `${ date.getHours().toString().padStart( 2, '0' ) }` +
+					`:${ date.getMinutes().toString().padStart( 2, '0' ) }` +
+					`:${ date.getSeconds().toString().padStart( 2, '0' ) }` +
+					`.${ date.getMilliseconds().toString().padStart( 3, '0' ) }`;
+			case 'YYYY-MM-DD HH:MM:SS':
+				return `${ toString( date, 'YYYY-MM-DD', utc ) } ${ toString( date, 'HH:MM:SS', utc ) }`;
+			default:
+				return `${ toString( date, 'YYYY-MM-DD', utc ) } ${ toString( date, 'HH:MM:SS.UUU', utc ) }`;
+		}
+	}
 }
 
 /**
-	Returns YYYY-MM-DD UTC date string.
-	@param date Date.
-	@returns YYYY-MM-DD date string.
+	Returns Date from YYYY-MM-DD[ HH:MM[:SS[.UUU]]] formatted date or date-time string.
+	@param value Date or date-time string in YYYY-MM-DD[ HH:MM[:SS[.UUU]]] format.
+	@param utc True to parse string as UTC date or date-time, false to parse it as local.
+	@returns Parsed Date, throws Error if invalid parameter format.
 */
-export function toUtcDateString( date: Date ): string {
-	return `${ date.getUTCFullYear().toString() }` +
-		`-${ ( date.getUTCMonth() + 1 ).toString().padStart( 2, '0' ) }` +
-		`-${ date.getUTCDate().toString().padStart( 2, '0' ) }`;
-}
-
-/**
-	Returns HH:MM:SS time string.
-	@param date Date.
-	@param appendMilliseconds Append milliseconds.
-	@returns HH:MM:SS[.UUU] time string.
-*/
-export function toTimeString( date: Date, appendMilliseconds?: boolean ): string {
-	return `${ date.getHours().toString().padStart( 2, '0' ) }` +
-		`:${ date.getMinutes().toString().padStart( 2, '0' ) }` +
-		`:${ date.getSeconds().toString().padStart( 2, '0' ) }` +
-		( appendMilliseconds ? `.${ date.getMilliseconds().toString().padStart( 3, '0' ) }` : '' );
-}
-
-/**
-	Returns HH:MM:SS UTC time string.
-	@param date Date.
-	@param appendMilliseconds Append milliseconds.
-	@returns HH:MM:SS[.UUU] time string.
-*/
-export function toUtcTimeString( date: Date, appendMilliseconds?: boolean ): string {
-	return `${ date.getUTCHours().toString().padStart( 2, '0' ) }` +
-		`:${ date.getUTCMinutes().toString().padStart( 2, '0' ) }` +
-		`:${ date.getUTCSeconds().toString().padStart( 2, '0' ) }` +
-		( appendMilliseconds ? `.${ date.getUTCMilliseconds().toString().padStart( 3, '0' ) }` : '' );
-}
-
-/**
-	Returns YYYY-MM-DD HH:MM:SS[.UUU] date-time string.
-	@param date Date.
-	@param appendMilliseconds Append milliseconds.
-	@returns YYYY-MM-DD HH:MM:SS[.UUU] date-time string.
-*/
-export function toDateTimeString( date: Date, appendMilliseconds?: boolean ): string {
-	return `${ toDateString( date ) } ${ toTimeString( date, appendMilliseconds ) }`;
-}
-
-/**
-	Returns YYYY-MM-DD HH:MM:SS[.UUU] UTC date-time string.
-	@param date Date.
-	@param appendMilliseconds Append milliseconds.
-	@returns YYYY-MM-DD HH:MM:SS[.UUU] date-time string.
-*/
-export function toUtcDateTimeString( date: Date, appendMilliseconds?: boolean ): string {
-	return `${ toUtcDateString( date ) } ${ toUtcTimeString( date, appendMilliseconds ) }`;
-}
-
-/**
-	Returns Date from YYYY-MM-DD[ HH:MM[:SS[.UUU]]] formatted date-time string.
-	@param value Date-time string in YYYY-MM-DD[ HH:MM[:SS[.UUU]]] format.
-	@returns Parsed Date, throw RangeError if invalid parameter format.
-*/
-export function fromDateTimeString( value: string ): Date {
-	return new Date( value );
-}
-
-/**
-	Returns Date from YYYY-MM-DD[ HH:MM[:SS[.UUU]]] formatted UTC date-time string.
-	@param value Date-time string in YYYY-MM-DD[ HH:MM[:SS[.UUU]]] format.
-	@returns Parsed Date, throw RangeError if invalid parameter format.
-*/
-export function fromUtcDateTimeString( value: string ): Date {
-	switch ( value.length ) {
-		case 10:
-			return new Date( value + ' 00:00:00.000Z' );
-		case 16:
-			return new Date( value + ':00.000Z' );
-		case 19:
-			return new Date( value + '.000Z' );
-		default:
-			if ( value.length > 22 ) {
-				return new Date( value.substring( 0, 23 ) + 'Z' );
-			}
-			else {
+export function fromString( value: string, utc?: boolean ): Date {
+	if ( utc ) {
+		switch ( value.length ) {
+			case 10:
+				return new Date( `${ value } 00:00:00.000Z` );
+			case 16:
+				return new Date( `${ value }:00.000Z` );
+			case 19:
+				return new Date( `${ value }.000Z` );
+			default:
+				if ( value.length > 22 ) {
+					return new Date( `${ value.substring( 0, 23 ) }Z` );
+				}
 				throw new Error( `invalid parameter '${ value }'` );
-			}
+		}
+	}
+	else {
+		return new Date( value );
 	}
 }

@@ -44,7 +44,7 @@
 		"no-floating-decimal": 1,
 		"no-implicit-coercion": [ 1, { "boolean": true, "number": true, "string": true } ],
 		"no-implied-eval": 2,
-		"no-invalid-this": 2,
+		"no-invalid-this": 0,
 		"no-iterator": 2,
 		"no-labels": 1,
 		"no-lone-blocks": 1,

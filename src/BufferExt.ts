@@ -272,6 +272,7 @@ export function fromString( value: string,
 /**
 	Returns bigint decoded from the buffer.
 	@param data Buffer to decode.
+	@param littleEndian True if little end first.
 	@returns Decoded bigint.
 */
 export function toBigInt( data: DataView | ArrayBufferLike, littleEndian?: boolean ): bigint {
@@ -294,6 +295,7 @@ export function toBigInt( data: DataView | ArrayBufferLike, littleEndian?: boole
 	Sets buffer bytes from the bigint.
 	@param data Destination buffer.
 	@param value Bigint to encode.
+	@param littleEndian True if little end first.
 	@returns Encoded buffer.
 */
 export function setBigint( data: DataView | ArrayBufferLike, value: bigint, littleEndian?: boolean ): ArrayBuffer {
@@ -318,6 +320,7 @@ export function setBigint( data: DataView | ArrayBufferLike, value: bigint, litt
 	Returns encoded buffer of the bigint.
 	@param value Bigint to encode.
 	@param byteLength Buffer byte length.
+	@param littleEndian True if little end first.
 	@returns Encoded buffer.
 */
 export function fromBigInt( value: bigint, byteLength: number, littleEndian?: boolean ): ArrayBuffer {
