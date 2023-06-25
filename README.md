@@ -9,7 +9,7 @@ Target: ES2020
 
 ## BufferService
 
-### equateData
+### equate
 Returns true if two byte sequences contain the same bytes, false otherwise
 
 ### getBase16Dyad
