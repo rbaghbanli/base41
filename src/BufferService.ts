@@ -1,4 +1,4 @@
-import * as IntegerExt from './IntegerExt';
+import * as IntegerExt from './IntegerService';
 
 const _BASE16_CHAR_ENCODE_STR = '0123456789abcdef';
 const _BASE16_CHAR_DECODE_MAP = new Map<number, number>( _BASE16_CHAR_ENCODE_STR.split( '' ).map( ( s, i ) => [ s.charCodeAt( 0 ), i ] ) );
@@ -44,12 +44,12 @@ const _SHA256_K = [
 ];
 
 /**
-	Returns true if binary data sets contain the same bytes, false otherwise.
-	@param data1 Binary data to compare.
-	@param data2 Binary data to compare.
-	@returns True if binary data sets contain the same bytes, false otherwise.
+	Returns true if buffers contain the same bytes, false otherwise.
+	@param data1 First Buffer or DataView to compare.
+	@param data2 Second Buffer or DataView to compare.
+	@returns True if Buffers or DataViews contain the same bytes, false otherwise.
 */
-export function equateData( data1: DataView | ArrayBufferLike | null | undefined, data2: DataView | ArrayBufferLike | null | undefined ): boolean {
+export function equate( data1: DataView | ArrayBufferLike | null | undefined, data2: DataView | ArrayBufferLike | null | undefined ): boolean {
 	if ( data1 == null && data2 == null ) {
 		return true;
 	}
@@ -298,7 +298,7 @@ export function toBigInt( data: DataView | ArrayBufferLike, littleEndian?: boole
 	@param littleEndian True if little end first.
 	@returns Encoded buffer.
 */
-export function setBigint( data: DataView | ArrayBufferLike, value: bigint, littleEndian?: boolean ): ArrayBuffer {
+export function setBigInt( data: DataView | ArrayBufferLike, value: bigint, littleEndian?: boolean ): ArrayBuffer {
 	const dv = data instanceof DataView ? data : new DataView( data );
 	let v = value;
 	if ( littleEndian ) {
@@ -324,7 +324,7 @@ export function setBigint( data: DataView | ArrayBufferLike, value: bigint, litt
 	@returns Encoded buffer.
 */
 export function fromBigInt( value: bigint, byteLength: number, littleEndian?: boolean ): ArrayBuffer {
-	return setBigint( new ArrayBuffer( byteLength ), value, littleEndian );
+	return setBigInt( new ArrayBuffer( byteLength ), value, littleEndian );
 }
 
 /**

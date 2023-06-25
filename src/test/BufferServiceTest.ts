@@ -1,4 +1,4 @@
-import * as BufferExt from '../BufferExt';
+import * as BufferExt from '../BufferService';
 
 export function testBufferString(): number {
 	let passed = 0, failed = 0;
@@ -42,7 +42,7 @@ export function testBufferString(): number {
 		const lend: boolean = prm[ 2 ] as boolean;
 		const str = BufferExt.toString( new DataView( bin.buffer ), enc, lend );
 		const v = new Uint8Array( BufferExt.fromString( str, enc, lend ) );
-		if ( BufferExt.equateData( new DataView( v.buffer ), new DataView( bin.buffer ) ) ) {
+		if ( BufferExt.equate( new DataView( v.buffer ), new DataView( bin.buffer ) ) ) {
 			++passed;
 		}
 		else {

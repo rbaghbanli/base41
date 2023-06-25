@@ -6,7 +6,8 @@ Includes helper function for extended JSON string composing and parsing that sup
 
 Target: ES2020
 
-## BufferExt
+
+## BufferService
 
 ### equateData
 Returns true if two byte sequences contain the same bytes, false otherwise
@@ -57,19 +58,16 @@ Returns SHA256 256-bit hash code as bigint (not cryptographically secure)
 Returns SHA256 256-bit hash code as ArrayBuffer (not cryptographically secure)
 
 
-## DateExt
+## DateService
 
-### toDateString / toUtcDateString
-Returns YYYY-MM-DD date string
+### toString
+Returns YYYY-MM-DD( HH:MM(:SS(.UUU))) or HH:MM(:SS(.UUU)) date, time or date-time string
 
-### toTimeString / toUtcTimeString
-Returns HH:MM:SS(.UUU) time string
-
-### toDateTimeString / toUtcDateTimeString
-Returns YYYY-MM-DD HH:MM:SS(.UUU) date-time string
+### fromString
+Returns Date from YYYY-MM-DD( HH:MM(:SS(.UUU))) date or date-time string
 
 
-## IntegerExt
+## IntegerService
 
 ### rotateUint32BitsLeft
 Returns the result of bit rotation of 32-bit unsigned integer to left
@@ -99,7 +97,7 @@ Returns pseudorandom integer between two specified values (not cryptographically
 Returns UUID version 4 / random as bigint
 
 
-## JsonExt
+## JsonService
 
 ### toString
 Returns JSON string with bigint, Date, Set, Map, DataView and ArrayBuffer values wrapped into objects

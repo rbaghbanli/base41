@@ -1,4 +1,4 @@
-import * as JsonExt from '../JsonExt';
+import * as JsonExt from '../JsonService';
 
 export function testJsonString(): number {
 	let passed = 0, failed = 0;

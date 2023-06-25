@@ -1,4 +1,4 @@
-import * as DateExt from '../DateExt';
+import * as DateExt from '../DateService';
 
 export function testDateTimeString(): number {
 	let passed = 0, failed = 0;

@@ -1,4 +1,4 @@
-import * as BufferExt from './BufferExt';
+import * as BufferExt from './BufferService';
 
 /**
 	Replaces bigint, date, set, map, DataView and ArrayBuffer values with wrapping objects.

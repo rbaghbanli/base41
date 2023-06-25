@@ -1,4 +1,4 @@
-import * as IntegerExt from '../IntegerExt';
+import * as IntegerExt from '../IntegerService';
 
 export function testRotateUint32Bits(): number {
 	let passed = 0, failed = 0;

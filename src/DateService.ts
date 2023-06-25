@@ -1,12 +1,13 @@
 /**
-	Returns formatted date or date-time string.
+	Returns formatted date, time or date-time string.
 	@param date Date to stringify.
 	@param format 'YYYY-MM-DD', 'HH:MM', 'HH:MM:SS', 'HH:MM:SS.UUU', 'YYYY-MM-DD HH:MM:SS', 'YYYY-MM-DD HH:MM:SS.UUU'.
 	@param utc True for UTC, false for local.
 	@returns Formatted date or date-time string.
 */
 export function toString( date: Date,
-	format: 'YYYY-MM-DD' | 'HH:MM' | 'HH:MM:SS' | 'HH:MM:SS.UUU' | 'YYYY-MM-DD HH:MM:SS' | 'YYYY-MM-DD HH:MM:SS.UUU', utc?: boolean ): string {
+	format: 'YYYY-MM-DD' | 'HH:MM' | 'HH:MM:SS' | 'HH:MM:SS.UUU' | 'YYYY-MM-DD HH:MM' | 'YYYY-MM-DD HH:MM:SS' | 'YYYY-MM-DD HH:MM:SS.UUU',
+	utc?: boolean ): string {
 	if ( utc ) {
 		switch ( format ) {
 			case 'YYYY-MM-DD':
@@ -25,6 +26,8 @@ export function toString( date: Date,
 					`:${ date.getUTCMinutes().toString().padStart( 2, '0' ) }` +
 					`:${ date.getUTCSeconds().toString().padStart( 2, '0' ) }` +
 					`.${ date.getUTCMilliseconds().toString().padStart( 3, '0' ) }`;
+			case 'YYYY-MM-DD HH:MM':
+				return `${ toString( date, 'YYYY-MM-DD', utc ) } ${ toString( date, 'HH:MM', utc ) }`;
 			case 'YYYY-MM-DD HH:MM:SS':
 				return `${ toString( date, 'YYYY-MM-DD', utc ) } ${ toString( date, 'HH:MM:SS', utc ) }`;
 			default:
@@ -49,6 +52,8 @@ export function toString( date: Date,
 					`:${ date.getMinutes().toString().padStart( 2, '0' ) }` +
 					`:${ date.getSeconds().toString().padStart( 2, '0' ) }` +
 					`.${ date.getMilliseconds().toString().padStart( 3, '0' ) }`;
+			case 'YYYY-MM-DD HH:MM':
+				return `${ toString( date, 'YYYY-MM-DD', utc ) } ${ toString( date, 'HH:MM', utc ) }`;
 			case 'YYYY-MM-DD HH:MM:SS':
 				return `${ toString( date, 'YYYY-MM-DD', utc ) } ${ toString( date, 'HH:MM:SS', utc ) }`;
 			default:
