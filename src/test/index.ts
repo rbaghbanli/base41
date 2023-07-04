@@ -5,7 +5,8 @@ import * as JsonServiceTest from './JsonServiceTest';
 
 let failed = 0;
 console.log( `Ubdt testing started...\n` );
-failed += BufferServiceTest.testBufferString();
+failed += BufferServiceTest.testStringBuffer();
+failed += BufferServiceTest.testBigIntBuffer();
 failed += BufferServiceTest.testSha256HashCode();
 failed += DateServiceTest.testDateTimeString();
 failed += DateServiceTest.testDateTimeValues();

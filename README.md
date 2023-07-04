@@ -24,8 +24,11 @@ Returns base 41 triad string for code point
 ### getBase41TriadCodeAt
 Returns code point of base 41 triad string
 
-### getEncodedByteLength
+### getStringByteLength
 Returns the number of bytes in the buffer of string of specified encoding ( 'base16' | 'base41' | 'ascii' | 'ucs2' )
+
+### getBigIntByteLength
+Returns the number of bytes in the buffer of bigint
 
 ### toString
 Returns the string of specified encoding ( 'base16' | 'base41' | 'ascii' | 'ucs2' ) from the buffer

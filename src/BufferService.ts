@@ -122,7 +122,7 @@ export function getBase41TriadCodeAt( value: string, ix: number ): number | unde
 	@param encoding Encoding: 'base16', 'base41', 'ascii', or 'ucs2'.
 	@returns Number of bytes.
 */
-export function getEncodedByteLength( value: string,
+export function getStringByteLength( value: string,
 	encoding: 'base16' | 'base41' | 'ascii' | 'ucs2' = 'ucs2' ): number {
 	switch ( encoding ) {
 		case 'base16': return Math.ceil( value.length / 2 );
@@ -203,7 +203,7 @@ export function toString( data: DataView | ArrayBufferLike,
 */
 export function setString( data: DataView | ArrayBufferLike, value: string,
 	encoding: 'base16' | 'base41' | 'ascii' | 'ucs2' = 'ucs2', littleEndian?: boolean ): ArrayBuffer {
-	if ( data.byteLength < getEncodedByteLength( value, encoding ) ) {
+	if ( data.byteLength < getStringByteLength( value, encoding ) ) {
 		throw new RangeError( 'insufficient destination binary data length' );
 	}
 	const dv = data instanceof DataView ? data : new DataView( data );
@@ -266,7 +266,23 @@ export function setString( data: DataView | ArrayBufferLike, value: string,
 */
 export function fromString( value: string,
 	encoding: 'base16' | 'base41' | 'ascii' | 'ucs2' = 'ucs2', littleEndian?: boolean ): ArrayBuffer {
-	return setString( new ArrayBuffer( getEncodedByteLength( value, encoding ) ), value, encoding, littleEndian );
+	return setString( new ArrayBuffer( getStringByteLength( value, encoding ) ), value, encoding, littleEndian );
+}
+
+/**
+	Returns the number of bytes in encoded bigint.
+	@param value BigInt value.
+	@returns Number of bytes.
+*/
+export function getBigIntByteLength( value: bigint ): number {
+	let byteLength = 0;
+	let v = value;
+	do {
+		++byteLength;
+		v >>= 8n;
+	}
+	while ( v > 0n || v < -1n );
+	return byteLength;
 }
 
 /**
@@ -278,14 +294,18 @@ export function fromString( value: string,
 export function toBigInt( data: DataView | ArrayBufferLike, littleEndian?: boolean ): bigint {
 	const dv = data instanceof DataView ? data : new DataView( data );
 	let v = 0n;
-	if ( littleEndian ) {
-		for ( let i = dv.byteLength - 1; i >= 0; --i ) {
-			v = ( v << 8n ) + BigInt( dv.getUint8( i ) );
+	if ( dv.byteLength > 0 ) {
+		if ( littleEndian ) {
+			v = BigInt( dv.getInt8( dv.byteLength - 1 ) )
+			for ( let i = dv.byteLength - 2; i > -1; --i ) {
+				v = ( v << 8n ) | BigInt( dv.getUint8( i ) );
+			}
 		}
-	}
-	else {
-		for ( let i = 0; i < dv.byteLength; ++i ) {
-			v = ( v << 8n ) + BigInt( dv.getUint8( i ) );
+		else {
+			v = BigInt( dv.getInt8( 0 ) );
+			for ( let i = 1; i < dv.byteLength; ++i ) {
+				v = ( v << 8n ) | BigInt( dv.getUint8( i ) );
+			}
 		}
 	}
 	return v;
@@ -302,13 +322,13 @@ export function setBigInt( data: DataView | ArrayBufferLike, value: bigint, litt
 	const dv = data instanceof DataView ? data : new DataView( data );
 	let v = value;
 	if ( littleEndian ) {
-		for ( let i = dv.byteLength - 1; i >= 0; --i ) {
+		for ( let i = 0; i < dv.byteLength; ++i ) {
 			dv.setUint8( i, Number( v & 0xffn ) );
 			v >>= 8n;
 		}
 	}
 	else {
-		for ( let i = 0; i < dv.byteLength; ++i ) {
+		for ( let i = dv.byteLength - 1; i >= 0; --i ) {
 			dv.setUint8( i, Number( v & 0xffn ) );
 			v >>= 8n;
 		}
@@ -319,12 +339,11 @@ export function setBigInt( data: DataView | ArrayBufferLike, value: bigint, litt
 /**
 	Returns encoded buffer of the bigint.
 	@param value Bigint to encode.
-	@param byteLength Buffer byte length.
 	@param littleEndian True if little end first.
 	@returns Encoded buffer.
 */
-export function fromBigInt( value: bigint, byteLength: number, littleEndian?: boolean ): ArrayBuffer {
-	return setBigInt( new ArrayBuffer( byteLength ), value, littleEndian );
+export function fromBigInt( value: bigint, littleEndian?: boolean ): ArrayBuffer {
+	return setBigInt( new ArrayBuffer( getBigIntByteLength( value ) ), value, littleEndian );
 }
 
 /**

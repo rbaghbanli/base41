@@ -1,8 +1,8 @@
 import * as BufferExt from '../BufferService';
 
-export function testBufferString(): number {
+export function testStringBuffer(): number {
 	let passed = 0, failed = 0;
-	console.log( `testBufferString started...` );
+	console.log( `testStringBuffer started...` );
 	[
 		[ [], 'base16' ],
 		[ [ 0 ], 'base16' ],
@@ -36,7 +36,7 @@ export function testBufferString(): number {
 		[ [ 0, 2 ], 'ucs2', true ],
 		[ [ 0, 66, 0, 60, 4, 16, 4, 17, 4, 18, 4, 48, 4, 49, 4, 50, 0, 70, 0, 73, 0, 66 ], 'ucs2' ],
 		[ [ 0, 66, 0, 60, 4, 16, 4, 17, 4, 18, 4, 48, 4, 49, 4, 50, 0, 70, 0, 73, 0, 66 ], 'ucs2', true ],
-	].forEach( prm => {
+	].forEach( ( prm, ix ) => {
 		const bin = new Uint8Array( prm[ 0 ] as number[] );
 		const enc = prm[ 1 ] as 'base16'|'base41'|'ascii'|'ucs2';
 		const lend: boolean = prm[ 2 ] as boolean;
@@ -46,7 +46,40 @@ export function testBufferString(): number {
 			++passed;
 		}
 		else {
-			console.error( `test failed on ${ v } expected ${ bin } for ${ enc }` );
+			console.error( `test ${ ix } failed on ${ v } expected ${ bin } for ${ enc }` );
+			++failed;
+		}
+	} );
+	console.log( `result: passed ${ passed } failed ${ failed }` );
+	return failed;
+}
+
+export function testBigIntBuffer(): number {
+	let passed = 0, failed = 0;
+	console.log( `testBigIntBuffer started...` );
+	[
+		[ [ 0 ], true ],
+		[ [ 0 ], false ],
+		[ [ 1 ], true ],
+		[ [ 1 ], false ],
+		[ [ -1 ], true ],
+		[ [ -1 ], false ],
+		[ [ 0, 41, 0, 254, 20 ], true ],
+		[ [ 20, 41, 0, 254, 0 ], false ],
+		[ [ 16, 0, 10, 20, 40, 1, 3, 5, -7 ], true ],
+		[ [ -16, 10, 20, 40, 1, 3, 5, 7, 122, 127, 202, 30, 4, 255, 120, 4, 1, 0, 0, 254, 16, 16, 156, 16, 2, 2, 1, 0, 0, 0, 143 ], false ],
+		[ [ 0, 41, 10, 20, 40, 1, 3, 5, 7, 122, 127, 202, 30, 4, 255, 120, 4, 1, 0, 0, 254, 16, 16, 156, 16, 2, 2, 1, 0, 0, 0, 143, 90 ], true ],
+		[ [ 90, 41, 10, 20, 40, 1, 3, 5, 7, 122, 127, 202, 30, 4, 255, 120, 4, 1, 0, 0, 254, 16, 16, 156, 16, 2, 2, 1, 0, 0, 0, 143, 0 ], false ],
+	].forEach( ( prm, ix ) => {
+		const bin = new Uint8Array( prm[ 0 ] as number[] );
+		const lend: boolean = prm[ 1 ] as boolean;
+		const val = BufferExt.toBigInt( new DataView( bin.buffer ), lend );
+		const v = new Uint8Array( BufferExt.fromBigInt( val, lend ) );
+		if ( BufferExt.equate( new DataView( v.buffer ), new DataView( bin.buffer ) ) ) {
+			++passed;
+		}
+		else {
+			console.error( `test ${ ix } failed on ${ v } expected ${ bin }` );
 			++failed;
 		}
 	} );
@@ -72,7 +105,7 @@ export function testSha256HashCode(): number {
 			' sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco' +
 			' laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore' +
 			' eu fugiat nulla pariatur.' ],
-	].forEach( prm => {
+	].forEach( ( prm, ix ) => {
 		const hash: string = prm[ 0 ];
 		const str: string = prm[ 1 ];
 		const bin = BufferExt.fromString( str, 'ascii' );
@@ -82,7 +115,7 @@ export function testSha256HashCode(): number {
 			++passed;
 		}
 		else {
-			console.error( `test failed on ${ v } expected ${ hash } text length ${ str.length }` );
+			console.error( `test ${ ix } failed on ${ v } expected ${ hash } text length ${ str.length }` );
 			++failed;
 		}
 	} );
