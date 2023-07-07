@@ -1,4 +1,4 @@
-import * as JsonExt from '../JsonService';
+import { JsonService } from '../src';
 
 export function testJsonString(): number {
 	let passed = 0, failed = 0;
@@ -15,8 +15,8 @@ export function testJsonString(): number {
 		[ { tset: new Set( [ 'a', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'c', 'c', 'c', 'c', 'c' ] ), tset0: new Set() } ],
 		[ { inner: { tmap: new Map( [ [ 123n, 'abc ' ], [ 456n, 'def' ], [ 456n, 'def' ], [ 456n, 'def' ], [ 456n, 'def' ] ] ), tmap0: new Map() } } ],
 	].forEach( prm => {
-		const str: string = JsonExt.toString( prm[ 0 ] );
-		const v: string = JsonExt.toString( JsonExt.fromString( str ) );
+		const str: string = JsonService.toString( prm[ 0 ] );
+		const v: string = JsonService.toString( JsonService.fromString( str ) );
 		if ( str === v ) {
 			++passed;
 		}
@@ -44,8 +44,8 @@ export function testJsonValues(): number {
 		map0: new Map(),
 		map1: new Map<number, Set<number>>( [ [ 1, new Set<number>( [ 1 ] ) ], [ 2, new Set<number>( [ 2 ] ) ] ] )
 	};
-	const str = JsonExt.toString( tobj );
-	const robj = JsonExt.fromString( str );
+	const str = JsonService.toString( tobj );
+	const robj = JsonService.fromString( str );
 	if ( tobj.number_ === robj.number_ ) {
 		++passed;
 	}

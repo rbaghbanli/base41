@@ -1,6 +1,6 @@
 *.tgz
-.eslintrc.json
-tsconfig.json
+.eslintrc.*
+tsconfig.*
 src/
 test/
 .vscode/

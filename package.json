@@ -46,7 +46,7 @@
 		"clean": "rimraf --glob dst/* && rimraf --glob *.tgz",
 		"build": "tsc --build",
 		"prepare": "npm run clean && npm run build",
-		"pretest": "npm run clean && npm run build",
+		"pretest": "npm run clean && tsc --build tsconfig.test.json",
 		"test": "node dst/test"
 	},
 	"license": "MIT",

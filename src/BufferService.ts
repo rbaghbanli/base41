@@ -1,4 +1,4 @@
-import * as IntegerExt from './IntegerService';
+import * as IntegerService from './IntegerService';
 
 const _BASE16_CHAR_ENCODE_STR = '0123456789abcdef';
 const _BASE16_CHAR_DECODE_MAP = new Map<number, number>( _BASE16_CHAR_ENCODE_STR.split( '' ).map( ( s, i ) => [ s.charCodeAt( 0 ), i ] ) );
@@ -361,7 +361,7 @@ export function toFnv1a32HashCode( data: DataView | ArrayBufferLike, littleEndia
 	}
 	return littleEndian ?
 		hc :
-		IntegerExt.reverseUint32Bytes( hc );
+		IntegerService.reverseUint32Bytes( hc );
 }
 
 /**
@@ -380,7 +380,7 @@ export function toFnv1a64HashCode( data: DataView | ArrayBufferLike, littleEndia
 	}
 	return littleEndian ?
 		( BigInt( hc[ 1 ] ) << 32n ) | BigInt( hc[ 0 ] ) :
-		( BigInt( IntegerExt.reverseUint32Bytes( hc[ 0 ] ) ) << 32n ) | BigInt( IntegerExt.reverseUint32Bytes( hc[ 1 ] ) );
+		( BigInt( IntegerService.reverseUint32Bytes( hc[ 0 ] ) ) << 32n ) | BigInt( IntegerService.reverseUint32Bytes( hc[ 1 ] ) );
 }
 
 /**
@@ -413,22 +413,22 @@ export function toSha256HashCodeBuffer( data: DataView | ArrayBufferLike ): Arra
 		for ( let wi = 16; wi < 64; ++wi ) {	// word index to extend data in worksheet
 			const s15 = w[ wi - 15 ];
 			const s2 = w[ wi - 2 ];
-			const s0 = ( IntegerExt.rotateUint32BitsRight( s15, 7 ) ^ IntegerExt.rotateUint32BitsRight( s15, 18 ) ^ ( s15 >>> 3 ) ) >>> 0;
-			const s1 = ( IntegerExt.rotateUint32BitsRight( s2, 17 ) ^ IntegerExt.rotateUint32BitsRight( s2, 19 ) ^ ( s2 >>> 10 ) ) >>> 0;
+			const s0 = ( IntegerService.rotateUint32BitsRight( s15, 7 ) ^ IntegerService.rotateUint32BitsRight( s15, 18 ) ^ ( s15 >>> 3 ) ) >>> 0;
+			const s1 = ( IntegerService.rotateUint32BitsRight( s2, 17 ) ^ IntegerService.rotateUint32BitsRight( s2, 19 ) ^ ( s2 >>> 10 ) ) >>> 0;
 			w[ wi ] = ( w[ wi - 16 ] + s0 + w[ wi - 7 ] + s1 ) >>> 0;
 		}
 		for ( let i = 0; i < 8; ++i ) {
 			v[ i ] = h[ i ];
 		}
 		for ( let wi = 0; wi < 64; ++wi ) {	// word index to perform compression loop
-			const s1 = ( IntegerExt.rotateUint32BitsRight( v[ 4 ] /* e */, 6 ) ^
-				IntegerExt.rotateUint32BitsRight( v[ 4 ] /* e */, 11 ) ^
-				IntegerExt.rotateUint32BitsRight( v[ 4 ] /* e */, 25 ) ) >>> 0;
+			const s1 = ( IntegerService.rotateUint32BitsRight( v[ 4 ] /* e */, 6 ) ^
+				IntegerService.rotateUint32BitsRight( v[ 4 ] /* e */, 11 ) ^
+				IntegerService.rotateUint32BitsRight( v[ 4 ] /* e */, 25 ) ) >>> 0;
 			const ch = ( ( v[ 4 ] /* e */ & v[ 5 ] /* f */ ) ^ ( ( ~v[ 4 ] /* e */ ) & v[ 6 ] /* g */ ) ) >>> 0;
 			const t1 = ( v[ 7 ] /* h */ + s1 + ch + _SHA256_K[ wi ] + w[ wi ] ) >>> 0;
-			const s0 = ( IntegerExt.rotateUint32BitsRight( v[ 0 ] /* a */, 2 ) ^
-				IntegerExt.rotateUint32BitsRight( v[ 0 ] /* a */, 13 ) ^
-				IntegerExt.rotateUint32BitsRight( v[ 0 ] /* a */, 22 ) ) >>> 0;
+			const s0 = ( IntegerService.rotateUint32BitsRight( v[ 0 ] /* a */, 2 ) ^
+				IntegerService.rotateUint32BitsRight( v[ 0 ] /* a */, 13 ) ^
+				IntegerService.rotateUint32BitsRight( v[ 0 ] /* a */, 22 ) ) >>> 0;
 			const maj = ( ( v[ 0 ] /* a */ & v[ 1 ] /* b */ ) ^ ( v[ 0 ] /* a */ & v[ 2 ] /* c */ ) ^ ( v[ 1 ] /* b */ & v[ 2 ] /* c */ ) ) >>> 0;
 			const t2 = ( s0 + maj ) >>> 0;
 			v[ 7 ] /* h */ = v[ 6 ]; /* g */

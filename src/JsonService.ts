@@ -1,4 +1,4 @@
-import * as BufferExt from './BufferService';
+import * as BufferService from './BufferService';
 
 /**
 	Replaces bigint, date, set, map, DataView and ArrayBuffer values with wrapping objects.
@@ -7,7 +7,7 @@ import * as BufferExt from './BufferService';
 	@param value Property value.
 	@returns JSON string.
 */
-export function replaceJson( this: any, key: string, value: any ): any {
+export function replace( this: any, key: string, value: any ): any {
 	if ( typeof value === 'bigint' ) {
 		return { __json__bigint__: value.toString() };
 	}
@@ -21,10 +21,10 @@ export function replaceJson( this: any, key: string, value: any ): any {
 		return { __json__map__: Array.from( value.entries() ) };
 	}
 	if ( this[ key ] instanceof DataView && value ) {
-		return { __json__dataview__: BufferExt.toString( value, 'base41' ) };
+		return { __json__dataview__: BufferService.toString( value, 'base41' ) };
 	}
 	if ( this[ key ] instanceof ArrayBuffer && value ) {
-		return { __json__arraybuffer__: BufferExt.toString( value, 'base41' ) };
+		return { __json__arraybuffer__: BufferService.toString( value, 'base41' ) };
 	}
 	return value;
 }
@@ -35,7 +35,7 @@ export function replaceJson( this: any, key: string, value: any ): any {
 	@param value Property value.
 	@returns Parsed value.
 */
-export function reviveJson( key: string, value: any ): any {
+export function revive( key: string, value: any ): any {
 	if ( value != null && typeof value === 'object' ) {
 		if ( '__json__bigint__' in value && typeof value.__json__bigint__ === 'string' ) {
 			return BigInt( value.__json__bigint__ );
@@ -50,10 +50,10 @@ export function reviveJson( key: string, value: any ): any {
 			return new Map( value.__json__map__ );
 		}
 		if ( '__json__dataview__' in value && typeof value.__json__dataview__ === 'string' ) {
-			return new DataView( BufferExt.fromString( value.__json__dataview__, 'base41' ) );
+			return new DataView( BufferService.fromString( value.__json__dataview__, 'base41' ) );
 		}
 		if ( '__json__arraybuffer__' in value && typeof value.__json__arraybuffer__ === 'string' ) {
-			return BufferExt.fromString( value.__json__arraybuffer__, 'base41' );
+			return BufferService.fromString( value.__json__arraybuffer__, 'base41' );
 		}
 	}
 	return value;
@@ -66,7 +66,7 @@ export function reviveJson( key: string, value: any ): any {
 	@returns JSON string.
 */
 export function toString<T = any>( value: T, space?: number | string ): string {
-	return JSON.stringify( value, replaceJson, space );
+	return JSON.stringify( value, replace, space );
 }
 
 /**
@@ -75,5 +75,5 @@ export function toString<T = any>( value: T, space?: number | string ): string {
 	@returns Parsed value.
 */
 export function fromString<T = any>( value: string ): T {
-	return JSON.parse( value, reviveJson ) as T;
+	return JSON.parse( value, revive ) as T;
 }

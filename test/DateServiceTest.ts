@@ -1,4 +1,4 @@
-import * as DateExt from '../DateService';
+import { DateService } from '../src';
 
 export function testDateTimeString(): number {
 	let passed = 0, failed = 0;
@@ -13,8 +13,8 @@ export function testDateTimeString(): number {
 		[ new Date( '1980-11-30 21:59:59.999' ), 'YYYY-MM-DD HH:MM:SS.UUU', true ],
 		[ new Date( '1980-11-30 21:59:59.999Z' ), 'YYYY-MM-DD HH:MM:SS.UUU', false ],
 	].forEach( ( prm, ix ) => {
-		const str: string = DateExt.toString( prm[ 0 ] as Date, prm[ 1 ] as any, prm[ 2 ] as boolean );
-		const v: string = DateExt.toString( DateExt.fromString( str, prm[ 2 ] as boolean ), prm[ 1 ] as any, prm[ 2 ] as boolean );
+		const str: string = DateService.toString( prm[ 0 ] as Date, prm[ 1 ] as any, prm[ 2 ] as boolean );
+		const v: string = DateService.toString( DateService.fromString( str, prm[ 2 ] as boolean ), prm[ 1 ] as any, prm[ 2 ] as boolean );
 		if ( str === v ) {
 			++passed;
 		}
@@ -39,7 +39,7 @@ export function testDateTimeValues(): number {
 		[ '2020-01-01 22:22:22.999', new Date( '2020-01-01 22:22:22.999' ), 'YYYY-MM-DD HH:MM:SS.UUU', false ],
 	].forEach( ( prm, ix ) => {
 		const str: string = prm[ 0 ] as string;
-		const v: string = DateExt.toString( prm[ 1 ] as Date, prm[ 2 ] as any, prm[ 3 ] as boolean );
+		const v: string = DateService.toString( prm[ 1 ] as Date, prm[ 2 ] as any, prm[ 3 ] as boolean );
 		if ( str === v ) {
 			++passed;
 		}

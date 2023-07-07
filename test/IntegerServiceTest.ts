@@ -1,4 +1,4 @@
-import * as IntegerExt from '../IntegerService';
+import { IntegerService } from '../src';
 
 export function testRotateUint32Bits(): number {
 	let passed = 0, failed = 0;
@@ -15,7 +15,7 @@ export function testRotateUint32Bits(): number {
 	].forEach( prm => {
 		const num: number = prm[ 0 ];
 		const shift: number = prm[ 1 ];
-		const v = IntegerExt.rotateUint32BitsLeft( IntegerExt.rotateUint32BitsRight( num, shift ), shift );
+		const v = IntegerService.rotateUint32BitsLeft( IntegerService.rotateUint32BitsRight( num, shift ), shift );
 		if ( v === num ) {
 			++passed;
 		}
@@ -42,7 +42,7 @@ export function testReverseUint32Bytes(): number {
 		[ 0xff00fa00 ],
 	].forEach( prm => {
 		const num: number = prm[ 0 ];
-		const v = IntegerExt.reverseUint32Bytes( IntegerExt.reverseUint32Bytes( num ) );
+		const v = IntegerService.reverseUint32Bytes( IntegerService.reverseUint32Bytes( num ) );
 		if ( v === num ) {
 			++passed;
 		}
@@ -65,7 +65,7 @@ export function testRandomizeNumber(): number {
 		[ 4000 ],
 		[ 50000 ],
 	].forEach( prm => {
-		const rndUint: number = IntegerExt.randomizeUint( prm[ 0 ] );
+		const rndUint: number = IntegerService.randomizeUint( prm[ 0 ] );
 		if ( rndUint < prm[ 0 ] ) {
 			++passed;
 		}
@@ -73,7 +73,7 @@ export function testRandomizeNumber(): number {
 			console.error( `test failed on ${ rndUint } expected within [0, ${ prm[ 0 ] })` );
 			++failed;
 		}
-		const rndInt: number = IntegerExt.randomizeInt( -prm[ 0 ], prm[ 0 ] );
+		const rndInt: number = IntegerService.randomizeInt( -prm[ 0 ], prm[ 0 ] );
 		if ( rndInt >= -prm[ 0 ] && rndInt < prm[ 0 ] ) {
 			++passed;
 		}
@@ -91,7 +91,7 @@ export function testGenerateUuid(): number {
 	console.log( `testGenerateUuid started...` );
 	let uuid = -1n;
 	for ( let i = 0; i < 16; ++i ) {
-		const uuid_ = IntegerExt.generateUuid();
+		const uuid_ = IntegerService.generateUuid();
 		if ( uuid !== uuid_ ) {
 			++passed;
 		}

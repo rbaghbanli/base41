@@ -1,4 +1,4 @@
-import * as BufferExt from '../BufferService';
+import { BufferService } from '../src';
 
 export function testStringBuffer(): number {
 	let passed = 0, failed = 0;
@@ -40,9 +40,9 @@ export function testStringBuffer(): number {
 		const bin = new Uint8Array( prm[ 0 ] as number[] );
 		const enc = prm[ 1 ] as 'base16'|'base41'|'ascii'|'ucs2';
 		const lend: boolean = prm[ 2 ] as boolean;
-		const str = BufferExt.toString( new DataView( bin.buffer ), enc, lend );
-		const v = new Uint8Array( BufferExt.fromString( str, enc, lend ) );
-		if ( BufferExt.equate( new DataView( v.buffer ), new DataView( bin.buffer ) ) ) {
+		const str = BufferService.toString( new DataView( bin.buffer ), enc, lend );
+		const v = new Uint8Array( BufferService.fromString( str, enc, lend ) );
+		if ( BufferService.equate( new DataView( v.buffer ), new DataView( bin.buffer ) ) ) {
 			++passed;
 		}
 		else {
@@ -73,9 +73,9 @@ export function testBigIntBuffer(): number {
 	].forEach( ( prm, ix ) => {
 		const bin = new Uint8Array( prm[ 0 ] as number[] );
 		const lend: boolean = prm[ 1 ] as boolean;
-		const val = BufferExt.toBigInt( new DataView( bin.buffer ), lend );
-		const v = new Uint8Array( BufferExt.fromBigInt( val, lend ) );
-		if ( BufferExt.equate( new DataView( v.buffer ), new DataView( bin.buffer ) ) ) {
+		const val = BufferService.toBigInt( new DataView( bin.buffer ), lend );
+		const v = new Uint8Array( BufferService.fromBigInt( val, lend ) );
+		if ( BufferService.equate( new DataView( v.buffer ), new DataView( bin.buffer ) ) ) {
 			++passed;
 		}
 		else {
@@ -108,9 +108,9 @@ export function testSha256HashCode(): number {
 	].forEach( ( prm, ix ) => {
 		const hash: string = prm[ 0 ];
 		const str: string = prm[ 1 ];
-		const bin = BufferExt.fromString( str, 'ascii' );
-		const hc = BufferExt.toSha256HashCodeBuffer( new DataView( bin ) );
-		const v = BufferExt.toString( new DataView( hc ), 'base16' );
+		const bin = BufferService.fromString( str, 'ascii' );
+		const hc = BufferService.toSha256HashCodeBuffer( new DataView( bin ) );
+		const v = BufferService.toString( new DataView( hc ), 'base16' );
 		if ( v === hash ) {
 			++passed;
 		}
