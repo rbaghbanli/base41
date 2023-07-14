@@ -1,7 +1,8 @@
 # ubdt
 Ubiquitous Binary Data Transformation
 
-The collection of ubiquitous functions to deal with multitude of common routines with binary data, be it integer, ArrayBuffer, DataView, or Date.
+The collection of ubiquitous functions to deal with multitude of common routines with binary data,
+ be it integer, Date, ArrayBuffer or DataView. Can be used either in browser or NodeJS.
 Includes helper function for extended JSON string composing and parsing that supports most commonly used types.
 
 Target: ES2020
@@ -25,19 +26,19 @@ Returns base 41 triad string for code point.
 Returns code point of base 41 triad string.
 
 ### getStringByteLength
-Returns the number of bytes in the buffer of string of specified encoding ( 'base16' | 'base41' | 'ascii' | 'ucs2' ).
+Returns the number of bytes in the buffer of string of specified encoding ('base16'|'base41'|'ascii'|'ucs2').
 
 ### getBigIntByteLength
 Returns the number of bytes in the buffer of bigint.
 
 ### toString
-Returns the string of specified encoding ( 'base16' | 'base41' | 'ascii' | 'ucs2' ) from the buffer.
+Returns the string of specified encoding ('base16'|'base41'|'ascii'|'ucs2') from the buffer.
 
 ### fromString
-Returns encoded buffer from the string of specified encoding ( 'base16' | 'base41' | 'ascii' | 'ucs2' ).
+Returns encoded buffer from the string of specified encoding ('base16'|'base41'|'ascii'|'ucs2').
 
 ### setString
-Sets bytes into destination buffer from the string of specified encoding ( 'base16' | 'base41' | 'ascii' | 'ucs2' ).
+Sets bytes into destination buffer from the string of specified encoding ('base16'|'base41'|'ascii'|'ucs2').
 
 ### toBigInt
 Returns the bigint decoded from the buffer.
@@ -64,10 +65,10 @@ Returns SHA256 256-bit hash code as ArrayBuffer (not cryptographically secure).
 ## DateService
 
 ### toString
-Returns YYYY-MM-DD( HH:MM(:SS(.UUU))) or HH:MM(:SS(.UUU)) date, time or date-time string.
+Returns YYYY-MM-DD[ HH:MM[:SS[.UUU]]] or HH:MM[:SS[.UUU]] date/time/date-time string.
 
 ### fromString
-Returns Date from YYYY-MM-DD( HH:MM(:SS(.UUU))) date or date-time string.
+Returns Date from YYYY-MM-DD[ HH:MM[:SS[.UUU]]] date/date-time string.
 
 
 ## IntegerService

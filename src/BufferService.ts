@@ -296,7 +296,7 @@ export function toBigInt( data: DataView | ArrayBufferLike, littleEndian?: boole
 	let v = 0n;
 	if ( dv.byteLength > 0 ) {
 		if ( littleEndian ) {
-			v = BigInt( dv.getInt8( dv.byteLength - 1 ) )
+			v = BigInt( dv.getInt8( dv.byteLength - 1 ) );
 			for ( let i = dv.byteLength - 2; i > -1; --i ) {
 				v = ( v << 8n ) | BigInt( dv.getUint8( i ) );
 			}
