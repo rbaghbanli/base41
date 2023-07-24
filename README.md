@@ -4,6 +4,7 @@ Ubiquitous Binary Data Transformation
 The collection of ubiquitous functions to deal with multitude of common routines with binary data,
  be it integer, Date, ArrayBuffer or DataView. Can be used either in browser or NodeJS.
 Includes helper function for extended JSON string composing and parsing that supports most commonly used types.
+May be used in browser or NodeJS app.
 
 Target: ES2020
 
@@ -11,19 +12,23 @@ Target: ES2020
 ## BufferService
 
 ### equate
-Returns true if two byte sequences contain the same bytes, false otherwise.
+Returns true if two buffers contain the same bytes, false otherwise.
 
 ### getBase16Dyad
-Returns base 16 dyad string for code point.
+Returns base 16 dyad string (2 characters) for code point (1 byte), for example 4b for code point 75.
+Base 16 encoding, 2 characters for every byte, is most convinient, but creates long strings.
+It is also known as hex (hexadecimal) encoding.
 
 ### getBase16DyadCodeAt
-Returns code point of base 16 dyad string.
+Returns the code point (1 byte) of base 16 dyad string.
 
 ### getBase41Triad
-Returns base 41 triad string for code point.
+Returns base 41 triad string (3 characters) for code point (2 bytes), for example 2hg for 4075.
+Base 41 encoding, 3 characters for every pair of bytes, creates strings longer than base 64 encoding, 4 characters for every 3 bytes,
+ but it is URL friendly, easier to read and more convinent for binary values with even number of bytes.
 
 ### getBase41TriadCodeAt
-Returns code point of base 41 triad string.
+Returns code point (2 bytes) of base 41 triad string.
 
 ### getStringByteLength
 Returns the number of bytes in the buffer of string of specified encoding ('base16'|'base41'|'ascii'|'ucs2').
@@ -49,16 +54,16 @@ Returns buffer of the bigint of specified byte length.
 ### setBigInt
 Sets buffer bytes from the bigint.
 
-### toFnv1a32HashCode
+### getFnv1a32HashCode
 Returns FNV1A 32-bit hash code as number (not cryptographically secure).
 
-### toFnv1a64HashCode
+### getFnv1a64HashCode
 Returns FNV1A 64-bit hash code as bigint (not cryptographically secure).
 
-### toSha256HashCode
+### getSha256HashCode
 Returns SHA256 256-bit hash code as bigint (not cryptographically secure).
 
-### toSha256HashCodeBuffer
+### getSha256HashCodeBuffer
 Returns SHA256 256-bit hash code as ArrayBuffer (not cryptographically secure).
 
 
@@ -83,22 +88,28 @@ Returns the result of bit rotation of 32-bit unsigned integer to right.
 Returns the result of byte reversal of 32-bit unsigned integer.
 
 ### randomizeUint32
-Returns pseudorandom 32-bit unsigned integer (not cryptographically secure).
+Returns pseudorandom 32-bit unsigned integer.
+Not cryptographically secure.
 
 ### randomizeUint64
-Returns pseudorandom 64-bit unsigned integer (not cryptographically secure) as bigint.
+Returns pseudorandom 64-bit unsigned integer as bigint.
+Not cryptographically secure.
 
 ### randomizeUint128
-Returns pseudorandom 128-bit unsigned integer (not cryptographically secure) as bigint.
+Returns pseudorandom 128-bit unsigned integer as bigint.
+Not cryptographically secure.
 
 ### randomizeUint
-Returns pseudorandom unsigned integer between 0 and specified value (not cryptographically secure).
+Returns pseudorandom unsigned integer between 0 and specified value.
+Not cryptographically secure.
 
 ### randomizeInt
-Returns pseudorandom integer between two specified values (not cryptographically secure).
+Returns pseudorandom integer between two specified values.
+Not cryptographically secure.
 
 ### generateUuid
 Returns UUID version 4 / random as bigint.
+Not cryptographically secure.
 
 
 ## JsonService

@@ -109,7 +109,7 @@ export function testSha256HashCode(): number {
 		const hash: string = prm[ 0 ];
 		const str: string = prm[ 1 ];
 		const bin = BufferService.fromString( str, 'ascii' );
-		const hc = BufferService.toSha256HashCodeBuffer( new DataView( bin ) );
+		const hc = BufferService.getSha256HashCodeBuffer( new DataView( bin ) );
 		const v = BufferService.toString( new DataView( hc ), 'base16' );
 		if ( v === hash ) {
 			++passed;

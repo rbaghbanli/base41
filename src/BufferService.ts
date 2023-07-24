@@ -352,7 +352,7 @@ export function fromBigInt( value: bigint, littleEndian?: boolean ): ArrayBuffer
 	@param littleEndian True if little end first.
 	@returns FNV1A 32-bit hash code.
 */
-export function toFnv1a32HashCode( data: DataView | ArrayBufferLike, littleEndian?: boolean ): number {
+export function getFnv1a32HashCode( data: DataView | ArrayBufferLike, littleEndian?: boolean ): number {
 	const dv = data instanceof DataView ? data : new DataView( data );
 	let hc = 2166136261;
 	for ( let i = 0; i < dv.byteLength; ++i ) {
@@ -370,7 +370,7 @@ export function toFnv1a32HashCode( data: DataView | ArrayBufferLike, littleEndia
 	@param littleEndian True if little end first.
 	@returns FNV1A 64-bit hash code.
 */
-export function toFnv1a64HashCode( data: DataView | ArrayBufferLike, littleEndian?: boolean ): bigint {
+export function getFnv1a64HashCode( data: DataView | ArrayBufferLike, littleEndian?: boolean ): bigint {
 	const dv = data instanceof DataView ? data : new DataView( data );
 	const hc = new Uint32Array( [ 0x84222325, 0xcbf29ce4 ] ); // little-endian offset basis
 	for ( let i = 0; i < dv.byteLength; ++i ) {
@@ -388,7 +388,7 @@ export function toFnv1a64HashCode( data: DataView | ArrayBufferLike, littleEndia
 	@param data Binary data to hash.
 	@returns Buffer containing SHA256 256-bit hash code.
 */
-export function toSha256HashCodeBuffer( data: DataView | ArrayBufferLike ): ArrayBuffer {
+export function getSha256HashCodeBuffer( data: DataView | ArrayBufferLike ): ArrayBuffer {
 	const dv = data instanceof DataView ? data : new DataView( data );
 	const bc = Math.ceil( ( dv.byteLength + 1 + 8 ) / 64 );	// block count
 	const lbi = bc - 1;	// last block index
@@ -459,6 +459,6 @@ export function toSha256HashCodeBuffer( data: DataView | ArrayBufferLike ): Arra
 	@param littleEndian True if little end first.
 	@returns Bigint containing SHA256 256-bit hash code.
 */
-export function toSha256HashCode( data: DataView | ArrayBufferLike, littleEndian?: boolean ): bigint {
-	return toBigInt( toSha256HashCodeBuffer( data ), littleEndian );
+export function getSha256HashCode( data: DataView | ArrayBufferLike, littleEndian?: boolean ): bigint {
+	return toBigInt( getSha256HashCodeBuffer( data ), littleEndian );
 }
