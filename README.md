@@ -2,30 +2,33 @@
 Ubiquitous Binary Data Transformation
 
 The collection of ubiquitous functions to deal with multitude of common routines with binary data,
- be it integer, Date, ArrayBuffer or DataView. Can be used either in browser or NodeJS.
-Includes helper function for extended JSON string composing and parsing that supports most commonly used types.
-May be used in browser or NodeJS app.
+ be it integer, Date, ArrayBuffer or DataView.
 
-Target: ES2020
+Target: ES2020 [browser or NodeJS].
 
 
 ## BufferService
+Service includes base 41 encoding and decoding functions.
+Base 41 encoding (3 characters for every pair of bytes) results in string representation shorter than base 16 encoding,
+ while remaining URL friendly.
+Base 41 encoding can be compared to most popular base 64 encoding (4 characters for every 3 bytes).
+Base 64 encoding results in shorter string representation, but the advantage over base 41 is not always realized.
+For example, 8 bytes encoded with either base 64 or base 41 will result in 12 character long string.
+16 bytes encoded with either base 64 or base 41 will result in 24 character long string.
+As such, encoding binary GUIDs yields no advantage to base 64 encoding.
+Once byte sequences get longer, then base 64 ecoding produces shorter string representation.
 
 ### equate
 Returns true if two buffers contain the same bytes, false otherwise.
 
 ### getBase16Dyad
-Returns base 16 dyad string (2 characters) for code point (1 byte), for example 4b for code point 75.
-Base 16 encoding, 2 characters for every byte, is most convinient, but creates long strings.
-It is also known as hex (hexadecimal) encoding.
+Returns base 16 dyad string (2 characters) for a code point (1 byte), for example '4b' for code point 75.
 
 ### getBase16DyadCodeAt
-Returns the code point (1 byte) of base 16 dyad string.
+Returns the code point (1 byte) of base 16 dyad string (2 characters).
 
 ### getBase41Triad
-Returns base 41 triad string (3 characters) for code point (2 bytes), for example 2hg for 4075.
-Base 41 encoding, 3 characters for every pair of bytes, creates strings longer than base 64 encoding, 4 characters for every 3 bytes,
- but it is URL friendly, easier to read and more convinent for binary values with even number of bytes.
+Returns base 41 triad string (3 characters) for code point (2 bytes), for example '2hg' for code point 4075.
 
 ### getBase41TriadCodeAt
 Returns code point (2 bytes) of base 41 triad string.
@@ -68,6 +71,7 @@ Returns SHA256 256-bit hash code as ArrayBuffer (not cryptographically secure).
 
 
 ## DateService
+Universal and convinent date-time string format support.
 
 ### toString
 Returns YYYY-MM-DD[ HH:MM[:SS[.UUU]]] or HH:MM[:SS[.UUU]] date/time/date-time string.
@@ -77,6 +81,7 @@ Returns Date from YYYY-MM-DD[ HH:MM[:SS[.UUU]]] date/date-time string.
 
 
 ## IntegerService
+Service provides additional bitwise operations and randomization functions.
 
 ### rotateUint32BitsLeft
 Returns the result of bit rotation of 32-bit unsigned integer to left.
@@ -113,15 +118,17 @@ Not cryptographically secure.
 
 
 ## JsonService
+Helper functions for extended JSON stringification and parsing that supports most commonly used value types,
+ such as bigint, Date, Set, Map, DataView and ArrayBuffer.
 
 ### replace
-JSON replacer function. Replaces bigint, Date, Set, Map, DataView and ArrayBuffer values with wrapper objects.
+JSON replacer function. Replaces extended type values with wrapper objects.
 
 ### revive
-JSON reviver function. Revives bigint, Date, Set, Map, DataView and ArrayBuffer values from wrapper objects.
+JSON reviver function. Revives extended type values from wrapper objects.
 
 ### toString
-Returns JSON string with bigint, Date, Set, Map, DataView and ArrayBuffer values wrapped into objects.
+Returns JSON string with extended type values wrapped into objects.
 
 ### fromString
-Returns value with bigint, Date, Set, Map, DataView and ArrayBuffer values parsed from wrapper objects.
+Returns value with extended type values parsed from wrapper objects.
