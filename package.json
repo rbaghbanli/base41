@@ -1,7 +1,8 @@
 {
 	"name": "ubdt",
-	"version": "2.3.1",
+	"version": "2.4.0",
 	"description": "Ubiquitous Binary Data Transformation",
+	"type": "module",
 	"main": "dst/index.js",
 	"types": "dst/index.d.ts",
 	"hopmepage": "https://github.com/rbaghbanli/ubdt",

@@ -1,4 +1,4 @@
-import * as BufferService from './BufferService';
+import * as BufferService from './BufferService.js';
 
 /**
 	Replaces bigint, date, set, map, DataView and ArrayBuffer values with wrapping objects.

@@ -1,7 +1,7 @@
-import * as BufferServiceTest from './BufferServiceTest';
-import * as DateServiceTest from './DateServiceTest';
-import * as IntegerServiceTest from './IntegerServiceTest';
-import * as JsonServiceTest from './JsonServiceTest';
+import * as BufferServiceTest from './BufferServiceTest.js';
+import * as DateServiceTest from './DateServiceTest.js';
+import * as IntegerServiceTest from './IntegerServiceTest.js';
+import * as JsonServiceTest from './JsonServiceTest.js';
 
 let failed = 0;
 console.log( `Ubdt testing started...\n` );

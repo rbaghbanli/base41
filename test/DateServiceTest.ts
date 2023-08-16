@@ -1,4 +1,4 @@
-import { DateService } from '../src';
+import { DateService } from '../src/index.js';
 
 export function testDateTimeString(): number {
 	let passed = 0, failed = 0;

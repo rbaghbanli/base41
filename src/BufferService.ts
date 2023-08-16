@@ -1,4 +1,4 @@
-import * as IntegerService from './IntegerService';
+import * as IntegerService from './IntegerService.js';
 
 const _BASE16_CHAR_ENCODE_STR = '0123456789abcdef';
 const _BASE16_CHAR_DECODE_MAP = new Map<number, number>( _BASE16_CHAR_ENCODE_STR.split( '' ).map( ( s, i ) => [ s.charCodeAt( 0 ), i ] ) );

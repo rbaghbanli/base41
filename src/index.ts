@@ -1,4 +1,4 @@
-export * as BufferService from './BufferService';
-export * as DateService from './DateService';
-export * as IntegerService from './IntegerService';
-export * as JsonService from './JsonService';
+export * as BufferService from './BufferService.js';
+export * as DateService from './DateService.js';
+export * as IntegerService from './IntegerService.js';
+export * as JsonService from './JsonService.js';

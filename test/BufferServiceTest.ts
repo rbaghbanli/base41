@@ -1,4 +1,4 @@
-import { BufferService } from '../src';
+import { BufferService } from '../src/index.js';
 
 export function testStringBuffer(): number {
 	let passed = 0, failed = 0;

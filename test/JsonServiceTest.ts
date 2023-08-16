@@ -1,4 +1,4 @@
-import { JsonService } from '../src';
+import { JsonService } from '../src/index.js';
 
 export function testJsonString(): number {
 	let passed = 0, failed = 0;

@@ -1,4 +1,4 @@
-import { IntegerService } from '../src';
+import { IntegerService } from '../src/index.js';
 
 export function testRotateUint32Bits(): number {
 	let passed = 0, failed = 0;
