@@ -1,6 +1,0 @@
-{
-	"files.exclude": {
-		"**/dst": true,
-		"**/node_modules": true
-	}
-}
