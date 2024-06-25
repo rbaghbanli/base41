@@ -1,10 +1,11 @@
 {
 	"name": "base41",
 	"version": "1.0.1",
-	"description": "Ubiquitous Binary Data Transformation",
-	"type": "module",
-	"main": "dst/index.js",
+	"description": "Base41 Encoding/Decoding",
+	"main": "dst/cjs/index.js",
+	"module": "dst/index.js",
 	"types": "dst/index.d.ts",
+	"type": "module",
 	"hopmepage": "https://github.com/rbaghbanli/base41",
 	"bugs": "https://github.com/rbaghbanli/base41/issues",
 	"author": "Riad Baghbanli <riad@baghbanli.com>",
@@ -16,9 +17,8 @@
 	],
 	"keywords": [
 		"Base41",
-		"stringify",
-		"write",
-		"parse"
+		"Encoding",
+		"Decoding"
 	],
 	"scripts": {
 		"clean": "rimraf --glob dst/* && rimraf --glob *.tgz",
@@ -33,7 +33,13 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/rbaghbanli/ubdt.git"
+		"url": "git+https://github.com/rbaghbanli/base41.git"
+	},
+	"exports": {
+		".": {
+			"import": "./dst/index.js",
+			"require": "./dst/cjs/index.js"
+		}
 	},
 	"dependencies": {},
 	"devDependencies": {
