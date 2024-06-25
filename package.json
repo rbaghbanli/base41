@@ -1,12 +1,12 @@
 {
-	"name": "ubdt",
-	"version": "2.4.0",
+	"name": "base41",
+	"version": "1.0.0",
 	"description": "Ubiquitous Binary Data Transformation",
 	"type": "module",
 	"main": "dst/index.js",
 	"types": "dst/index.d.ts",
-	"hopmepage": "https://github.com/rbaghbanli/ubdt",
-	"bugs": "https://github.com/rbaghbanli/ubdt/issues",
+	"hopmepage": "https://github.com/rbaghbanli/base41",
+	"bugs": "https://github.com/rbaghbanli/base41/issues",
 	"author": "Riad Baghbanli <riad@baghbanli.com>",
 	"contributors": [
 		{
@@ -15,40 +15,20 @@
 		}
 	],
 	"keywords": [
-		"Ubiquitous",
-		"Binary",
-		"Data",
-		"Transformation",
-		"binary data",
-		"equate binary data",
-		"base16 encoding",
-		"base41 encoding",
-		"buffer string",
-		"FNV1A32 hash code",
-		"FNV1A64 hash code",
-		"SHA256 hash code",
-		"date string",
-		"time string",
-		"bit rotation",
-		"byte reversal",
-		"random number",
-		"generate uuid",
-		"json string",
-		"json bigint",
-		"json date",
-		"json set",
-		"json map",
-		"json DateView",
-		"json ArrayBuffer"
+		"Base41",
+		"stringify",
+		"write",
+		"parse"
 	],
 	"scripts": {
-		"lint": "eslint ./src --ext .ts",
-		"lintfix": "eslint ./src --ext .ts --fix",
 		"clean": "rimraf --glob dst/* && rimraf --glob *.tgz",
-		"build": "tsc --build",
-		"prepare": "npm run clean && npm run build",
-		"pretest": "npm run clean && tsc --build tsconfig.test.json",
-		"test": "node dst/test"
+		"prebuild": "npm run clean",
+		"build": "tsc --build tsconfig.esm.json && tsc --build tsconfig.cjs.json",
+		"pretest": "npm run clean && tsc --build tsconfig.spec.json",
+		"test": "jasmine",
+		"lint": "eslint ./src ./spec",
+		"lint-fix": "eslint ./src ./spec --fix",
+		"prepare": "npm run build && copyfiles ./cjs/package.json ./dst"
 	},
 	"license": "MIT",
 	"repository": {
@@ -57,10 +37,14 @@
 	},
 	"dependencies": {},
 	"devDependencies": {
-		"@typescript-eslint/parser": "~5.60.0",
-		"@typescript-eslint/eslint-plugin": "~5.60.0",
-		"eslint": "~8.43.0",
-		"rimraf": "~5.0.1",
-		"typescript": "~4.7.4"
+		"@types/jasmine": "~5.1.4",
+		"@typescript-eslint/eslint-plugin": "~7.14.0",
+		"@typescript-eslint/parser": "~7.14.0",
+		"copyfiles": "~2.4.1",
+		"eslint": "~8.57.0",
+		"jasmine": "~5.1.0",
+		"rimraf": "~5.0.7",
+		"typescript": "~5.5.2",
+		"typescript-eslint": "^7.14.0"
 	}
 }
