@@ -3,8 +3,10 @@ Base41 encoding and decoding.
 
 Base41 encoding (3 characters for every 2 bytes) uses alphabet '0123456789abcdefghijkLmnopqrstuvwxyzABCDE' and does not require padding.
 If string being parsed has length not equal to multiples of 3 then remaining 1 or 2 characters are parsed to a single byte.
-Base41 encoding results in string representation 50% shorter than base16 (2 characters for every byte) encoding,
- while remaining easy to read and URL friendly.
+
+Base41 encoding results in string representation 25% shorter than base16 (2 characters for every byte) encoding,
+ while remaining easily readable and URL friendly.
+
 While base64 encoding (4 characters for every 3 bytes) generally results in shorter string representation,
  the advantage over base41 is not realized for shorter byte sequences.
 For example, 8 byte sequence encoded with either base64 or base41 will result in 12 character long string,
